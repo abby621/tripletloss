@@ -23,7 +23,6 @@ class DataLayer(caffe.Layer):
     """Sample data layer used for training."""
 
     def _get_next_minibatch(self):
-        print "getting minibatch"
         num_images = self._batch_size
 
         # Sample to use for each image in this batch
@@ -57,9 +56,8 @@ class DataLayer(caffe.Layer):
                 sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
                 sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
 
-        print sample
         im_blob = self._get_image_blob(sample)
-        #print sample
+        print im_blob
         blobs = {'data': im_blob,
              'labels': sample_labels}
         return blobs
@@ -100,7 +98,6 @@ class DataLayer(caffe.Layer):
         blobs = self._get_next_minibatch()
 
         for blob_name, blob in blobs.iteritems():
-            print blob_name
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
             #top[top_ind].reshape(*(blob.shape))
