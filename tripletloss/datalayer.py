@@ -57,6 +57,7 @@ class DataLayer(caffe.Layer):
                 sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
                 sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
 
+        print sample
         im_blob = self._get_image_blob(sample)
         #print sample
         blobs = {'data': im_blob,
