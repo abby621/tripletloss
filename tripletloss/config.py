@@ -1,5 +1,7 @@
 import os
 from numpy import *
+from caffe.io import blobproto_to_array
+from caffe.proto import caffe_pb2
 
 # Training image data path
 IMAGEPATH = '/home/seal/dataset/fast-rcnn/caffe-fast-rcnn/data/Facedevkit/tripletloss/'
@@ -22,3 +24,9 @@ BATCH_SIZE = 30
 
 # Use flipped images also?
 FLIPPED = True
+
+blob = caffe_pb2.BlobProto()
+data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
+blob.ParseFromString(data)
+arr = np.array(blobproto_to_array(blob))
+IM_MEAN = arr[0]
