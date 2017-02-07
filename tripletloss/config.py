@@ -1,5 +1,5 @@
 import os
-from numpy import *
+import numpy as np
 from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 
