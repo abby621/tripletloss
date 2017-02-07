@@ -565,30 +565,30 @@ layer {
 #   }
 # }
 #add activation layer may increase the feature's expression
-layer {
-  name: "triplet_select"
-  type: "Python"
-  bottom: "fc9_1"
-  bottom: "labels"
-  top: "archor"
-  top: "positive"
-  top: "negative"
-  python_param {
-    module: "tripletselectlayer"
-    layer: "TripletSelectLayer"
-  }
-}
-layer {
-  name: "tripletloss"
-  type: "Python"
-  bottom: "archor"
-  bottom: "positive"
-  bottom: "negative"
-  top: "loss"
-  python_param {
-    module: "tripletlosslayer"
-    layer: "TripletLayer"
-    param_str: "'margin': 0.2"
-  }
-  loss_weight: 1
-}
+# layer {
+#   name: "triplet_select"
+#   type: "Python"
+#   bottom: "fc9_1"
+#   bottom: "labels"
+#   top: "archor"
+#   top: "positive"
+#   top: "negative"
+#   python_param {
+#     module: "tripletselectlayer"
+#     layer: "TripletSelectLayer"
+#   }
+# }
+# layer {
+#   name: "tripletloss"
+#   type: "Python"
+#   bottom: "archor"
+#   bottom: "positive"
+#   bottom: "negative"
+#   top: "loss"
+#   python_param {
+#     module: "tripletlosslayer"
+#     layer: "TripletLayer"
+#     param_str: "'margin': 0.2"
+#   }
+#   loss_weight: 1
+# }
