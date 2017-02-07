@@ -81,8 +81,8 @@ if __name__ == '__main__':
     """Train network."""
     solver_prototxt = '/project/focus/abby/tripletloss/solver.prototxt'
     output_dir = '/project/focus/abby/tripletloss/models/outputs/'
-    #pretrained_model = '/project/focus/abby/tripletloss/models/VGG16_SalObjSub.caffemodel'
-    pretrained_model = None
+    pretrained_model = '/project/focus/abby/hotelnet/models/places205VGG16/snapshot_iter_765280.caffemodel'
+    #pretrained_model = None
     #pretrained_model = '/home/seal/dataset/fast-rcnn/data/vgg_face_caffe/VGG_FACE.caffemodel'
     max_iters = config.MAX_ITERS
     sw = SolverWrapper(solver_prototxt,output_dir,pretrained_model)
