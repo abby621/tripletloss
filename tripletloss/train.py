@@ -79,7 +79,7 @@ class SolverWrapper(object):
 
 if __name__ == '__main__':
     """Train network."""
-    solver_prototxt = '/project/focus/datasets/tripletloss/solver.prototxt'
+    solver_prototxt = '/project/focus/abby/tripletloss/solver.prototxt'
     output_dir = '/project/focus/abby/tripletloss/models/outputs/'
     pretrained_model = '/project/focus/abby/tripletloss/models/VGG16_SalObjSub.caffemodel'
     #pretrained_model = None
