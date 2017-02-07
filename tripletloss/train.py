@@ -52,7 +52,6 @@ class SolverWrapper(object):
         net.save(str(filename))
         print 'Wrote snapshot to: {:s}'.format(filename)
 
-
     def train_model(self, max_iters):
         """Network training loop."""
         last_snapshot_iter = -1
@@ -60,6 +59,7 @@ class SolverWrapper(object):
         while self.solver.iter < max_iters:
             timer.tic()
             self.solver.step(1)
+            print self.solver.net.params.keys()
             print 'fc9_1:',sorted(self.solver.net.params['fc9_1'][0].data[0])[-1]
             #print 'fc9:',sorted(self.solver.net.params['fc9'][0].data[0])[-1]
             #print 'fc7:',sorted(self.solver.net.params['fc7'][0].data[0])[-1]
@@ -81,11 +81,11 @@ if __name__ == '__main__':
     """Train network."""
     solver_prototxt = '/project/focus/abby/tripletloss/solver.prototxt'
     output_dir = '/project/focus/abby/tripletloss/models/outputs/'
-    pretrained_model = '/project/focus/abby/tripletloss/models/VGG16_SalObjSub.caffemodel'
-    #pretrained_model = None
+    #pretrained_model = '/project/focus/abby/tripletloss/models/VGG16_SalObjSub.caffemodel'
+    pretrained_model = None
     #pretrained_model = '/home/seal/dataset/fast-rcnn/data/vgg_face_caffe/VGG_FACE.caffemodel'
     max_iters = config.MAX_ITERS
-    sw = SolverWrapper(solver_prototxt, output_dir,pretrained_model)
+    sw = SolverWrapper(solver_prototxt,output_dir,pretrained_model)
 
     print 'Solving...'
     sw.train_model(max_iters)
