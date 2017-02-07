@@ -66,7 +66,6 @@ class DataLayer(caffe.Layer):
         im_blob = []
         labels_blob = []
         for i in range(self._batch_size):
-            print sample[i]
             im = cv2.imread(sample[i])
             im = prep_im_for_blob(im)
             im_blob.append(im)
