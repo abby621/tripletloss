@@ -32,5 +32,4 @@ def prep_im_for_blob(im):
     im -= pixel_means
     im = cv2.resize(im, (224,224),
                     interpolation=cv2.INTER_LINEAR)
-
     return im
