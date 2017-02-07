@@ -19,11 +19,11 @@ import cv2
 from blob import prep_im_for_blob, im_list_to_blob
 import config
 
-
 class DataLayer(caffe.Layer):
     """Sample data layer used for training."""
 
     def _get_next_minibatch(self):
+        print "getting minibatch"
         num_images = self._batch_size
 
         # Sample to use for each image in this batch
@@ -113,69 +113,9 @@ class DataLayer(caffe.Layer):
         """Reshaping happens during the call to forward."""
         pass
 
-class TestBlobFetcher():
-    """Experimental class for prefetching blobs in a separate process."""
-
-    def __init__(self):
-        self._batch_size = 30
-        self.data_container =  hoteldata()
-        self._index = 0
-
-    def _get_next_minibatch(self):
-        num_images = self._batch_size
-
-        # Sample to use for each image in this batch
-        sample = []
-        sample_labels = []
-        if self._index >= len(self.data_container._train_im_paths):
-            self._index = 0
-
-        train_im_path = self.data_container._train_im_paths[self._index]
-        train_im_label = self.data_container._train_im_labels[self._index]
-
-        self._index = self._index + 1
-        while len(sample) < self._triplet:
-            sample.append(train_im_path)
-            sample_labels.append(train_im_label)
-
-        positive_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x==train_im_label and i!=self._index]
-        negative_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x!=train_im_label]
-
-        # Sample positive samples
-        while len(sample) < self._triplet*2:
-            pos_index = random.randint(0,len(positive_examples)-1)
-            if (self.data_container._train_im_paths[positive_examples[pos_index]]) not in sample:
-                sample.append(self.data_container._train_im_paths[positive_examples[pos_index]])
-                sample_labels.append(self.data_container._train_im_labels[positive_examples[pos_index]])
-
-        # Sample negative samples
-        while len(sample) < self._triplet*3:
-            neg_index = random.randint(0,len(negative_examples)-1)
-            if (self.data_container._train_im_paths[negative_examples[neg_index]]) not in sample:
-                sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
-                sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
-
-        # TODO: Send labels to _get_image_blob, if necessary?
-        im_blob = self._get_image_blob(sample)
-        #print sample
-        blobs = {'data': im_blob,
-             'labels': sample_labels}
-        return blobs
-
-    def _get_image_blob(self,sample):
-        im_blob = []
-        labels_blob = []
-        for i in range(self._batch_size):
-            im = cv2.imread(sample[i])
-            im = prep_im_for_blob(im)
-            im_blob.append(im)
-        # Create a blob to hold the input images
-        blob = im_list_to_blob(im_blob)
-        return blob
-
 if __name__ == '__main__':
     #print data_container._sample
-    test = TestBlobFetcher()
+    test = DataLayer()
     for i in range(500):
         blob = test._get_next_minibatch()
         print blob["labels"]
