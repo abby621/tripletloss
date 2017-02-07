@@ -29,7 +29,7 @@ def im_list_to_blob(ims):
 def prep_im_for_blob(im):
     target_size = 224
     im = im.astype(np.float32, copy=False)
-    im = cv2.resize(im, (cfg.IM_MEAN.shape[0], cfg.IM_MEAN.shape[1], cfg.IM_MEAN.shape[2]), interpolation=cv2.INTER_LINEAR)
+    im = cv2.resize(im,(IM_MEAN.shape[1],IM_MEAN.shape[2]),interpolation=cv2.INTER_LINEAR).reshape(IM_MEAN.shape[0],IM_MEAN.shape[1],IM_MEAN.shape[2])
     im -= cfg.IM_MEAN
     im = cv2.resize(im, (224,224), interpolation=cv2.INTER_LINEAR)
     return im
