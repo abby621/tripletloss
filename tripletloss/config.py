@@ -30,4 +30,4 @@ blob = caffe_pb2.BlobProto()
 data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
-IM_MEAN = arr[0]
+IM_MEAN = arr[0].reshape(256,256,3)
