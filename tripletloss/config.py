@@ -30,5 +30,5 @@ data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).re
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 mean_arr = arr[0]
-IM_MEAN = cv2.resize(mean_arr, (224,224),
+IM_MEAN = cv2.resize(mean_arr, (256,256),
                 interpolation=cv2.INTER_LINEAR)
