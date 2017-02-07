@@ -29,6 +29,7 @@ def prep_im_for_blob(im):
     target_size = 224
     pixel_means = np.array([[[107.52418528,  125.18871711,  142.75739435]]])
     im = im.astype(np.float32, copy=False)
+    print im
     im -= pixel_means
     im = cv2.resize(im, (224,224),
                     interpolation=cv2.INTER_LINEAR)
