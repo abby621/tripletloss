@@ -64,7 +64,7 @@ class DataLayer(caffe.Layer):
              'labels': sample_labels}
         return blobs
 
-    def _get_image_blob(self,images):
+    def _get_image_blob(self,sample):
         im_blob = []
         labels_blob = []
         for i in range(self._batch_size):
