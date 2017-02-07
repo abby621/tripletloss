@@ -59,9 +59,9 @@ class SolverWrapper(object):
         while self.solver.iter < max_iters:
             timer.tic()
             self.solver.step(1)
-            print self.solver.net.params.keys()
-            print 'fc9_1:',sorted(self.solver.net.params['fc9_1'][0].data[0])[-1]
-            #print 'fc9:',sorted(self.solver.net.params['fc9'][0].data[0])[-1]
+            #print self.solver.net.params.keys()
+            #print 'fc9_1:',sorted(self.solver.net.params['fc9_1'][0].data[0])[-1]
+            print 'fc9:',sorted(self.solver.net.params['fc9'][0].data[0])[-1]
             #print 'fc7:',sorted(self.solver.net.params['fc7'][0].data[0])[-1]
             #print 'fc6:',sorted(self.solver.net.params['fc6'][0].data[0])[-1]
             #print 'fc9:',(self.solver.net.params['fc9'][0].data[0])[0]
