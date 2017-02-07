@@ -1,4 +1,4 @@
-net: "../train.prototxt"
+net: "/project/focus/abby/tripletloss/train.prototxt"
 test_iter: 1
 test_interval: 1000
 base_lr: 0.05
@@ -10,5 +10,5 @@ max_iter: 400000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 10000
-snapshot_prefix: "../models/vggnet_softmax"
+snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs"
 solver_mode: GPU
