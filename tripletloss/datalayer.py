@@ -36,6 +36,7 @@ class DataLayer(caffe.Layer):
         train_im_label = self.data_container._train_im_labels[self._index]
 
         self._index = self._index + 1
+        print self._index
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
