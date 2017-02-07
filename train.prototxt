@@ -501,69 +501,69 @@ layer {
 }
 
 #======================softmax====================
-#layer {
-#  name: "fc9"
-#  type: "InnerProduct"
-#  bottom: "fc7"
-#  top: "fc9"
-#  param {
-#    lr_mult: 0
-#    decay_mult: 0
-#  }
-#  param {
-#    lr_mult: 0
-#    decay_mult: 0
-#  }
-#  inner_product_param {
-#    num_output: 997
-#    weight_filler {
-#      type: "xavier"
-#    }
-#  }
-#}
-#layer {
-#  name: "accuracy_1"
-#  type:  "Accuracy"
-#  bottom: "fc9"
-#  bottom: "labels"
-#  top: "accuracy"
-#  include: { phase: TEST }
-#}
-#layer {
-#  name: "loss_cls"
-#  type: "SoftmaxWithLoss"
-#  bottom: "fc9"
-#  bottom: "labels"
-#  top: "loss_cls"
-#  loss_weight: 1
-#}
+layer {
+ name: "fc9"
+ type: "InnerProduct"
+ bottom: "fc7"
+ top: "fc9"
+ param {
+   lr_mult: 0
+   decay_mult: 0
+ }
+ param {
+   lr_mult: 0
+   decay_mult: 0
+ }
+ inner_product_param {
+   num_output: 997
+   weight_filler {
+     type: "xavier"
+   }
+ }
+}
+layer {
+ name: "accuracy_1"
+ type:  "Accuracy"
+ bottom: "fc9"
+ bottom: "labels"
+ top: "accuracy"
+ include: { phase: TEST }
+}
+layer {
+ name: "loss_cls"
+ type: "SoftmaxWithLoss"
+ bottom: "fc9"
+ bottom: "labels"
+ top: "loss_cls"
+ loss_weight: 1
+}
 #====================tripletloss==================
-layer {
-  name: "norm2"
-  type: "Python"
-  bottom: "fc7"
-  top: "norm2"
-  python_param {
-    module: "norm2layer"
-    layer: "Norm2Layer"
-  }
-}
-layer {
-  name: "fc9_1"
-  type: "InnerProduct"
-  bottom: "norm2"
-  top: "fc9_1"
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 512
-    weight_filler {
-      type: "xavier"
-    }
-  }
-}
+# layer {
+#   name: "norm2"
+#   type: "Python"
+#   bottom: "fc7"
+#   top: "norm2"
+#   python_param {
+#     module: "norm2layer"
+#     layer: "Norm2Layer"
+#   }
+# }
+# layer {
+#   name: "fc9_1"
+#   type: "InnerProduct"
+#   bottom: "norm2"
+#   top: "fc9_1"
+#   param {
+#     lr_mult: 1
+#     decay_mult: 0
+#   }
+#   inner_product_param {
+#     num_output: 512
+#     weight_filler {
+#       type: "xavier"
+#     }
+#   }
+# }
 #add activation layer may increase the feature's expression
 layer {
   name: "triplet_select"

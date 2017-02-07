@@ -18,7 +18,7 @@ import math
 import config
 
 class TripletSelectLayer(caffe.Layer):
-        
+
     def setup(self, bottom, top):
         """Setup the TripletSelectLayer."""
         self.triplet = config.BATCH_SIZE/3
@@ -49,9 +49,9 @@ class TripletSelectLayer(caffe.Layer):
             a_n = archor_feature - negative_feature
             an = np.dot(a_n,a_n)
             ans[i+self.triplet*2] = an
-        ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)  
+        ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
 
-        for i in range(self.triplet): 
+        for i in range(self.triplet):
             top_archor.append(bottom[0].data[i])
             top_positive.append(bottom[0].data[aps[i][0]])
             top_negative.append(bottom[0].data[ans[i][0]])
@@ -62,10 +62,10 @@ class TripletSelectLayer(caffe.Layer):
         top[0].data[...] = np.array(top_archor).astype(float32)
         top[1].data[...] = np.array(top_positive).astype(float32)
         top[2].data[...] = np.array(top_negative).astype(float32)
-    
+
 
     def backward(self, top, propagate_down, bottom):
-        
+
         for i in range(len(self.tripletlist)):
             if not i in self.no_residual_list:
                 bottom[0].diff[self.tripletlist[i][0]] = top[0].diff[i]
@@ -79,15 +79,8 @@ class TripletSelectLayer(caffe.Layer):
         #print 'backward-no_re:',bottom[0].diff[0][0]
         #print 'tripletlist:',self.no_residual_list
 
-        
+
 
     def reshape(self, bottom, top):
         """Reshaping happens during the call to forward."""
         pass
-
-
-
-
-
-
-

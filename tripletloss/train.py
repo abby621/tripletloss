@@ -37,7 +37,6 @@ class SolverWrapper(object):
         with open(solver_prototxt, 'rt') as f:
             pb2.text_format.Merge(f.read(), self.solver_param)
 
-
     def snapshot(self):
         """Take a snapshot of the network after unnormalizing the learned
         """
@@ -60,7 +59,7 @@ class SolverWrapper(object):
         timer = Timer()
         while self.solver.iter < max_iters:
             timer.tic()
-            self.solver.step(1)	    
+            self.solver.step(1)
             print 'fc9_1:',sorted(self.solver.net.params['fc9_1'][0].data[0])[-1]
             #print 'fc9:',sorted(self.solver.net.params['fc9'][0].data[0])[-1]
             #print 'fc7:',sorted(self.solver.net.params['fc7'][0].data[0])[-1]
@@ -75,37 +74,19 @@ class SolverWrapper(object):
             #print 'fc9:',self.solver.net.params['fc9'][0].data[0][0]
             timer.toc()
             if self.solver.iter % (10 * self.solver_param.display) == 0:
-                print 'speed: {:.3f}s / iter'.format(timer.average_time)          
+                print 'speed: {:.3f}s / iter'.format(timer.average_time)
 
 
 if __name__ == '__main__':
     """Train network."""
-    solver_prototxt = '../solver.prototxt'
-    output_dir = '../models/vgg_face_tripletloss/'
-    pretrained_model = '../models/_iter_40000.caffemodel'
+    solver_prototxt = '/project/focus/datasets/tripletloss/solver.prototxt'
+    output_dir = '/project/focus/abby/hotelnet/models/vgg_face_tripletloss/'
+    pretrained_model = '/project/focus/abby/hotelnet/models/vgg16/VGG16_SalObjSub.caffemodel'
     #pretrained_model = None
     #pretrained_model = '/home/seal/dataset/fast-rcnn/data/vgg_face_caffe/VGG_FACE.caffemodel'
     max_iters = config.MAX_ITERS
     sw = SolverWrapper(solver_prototxt, output_dir,pretrained_model)
-    
+
     print 'Solving...'
     sw.train_model(max_iters)
     print 'done solving'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
