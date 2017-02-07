@@ -19,17 +19,17 @@ class hoteldata():
         with open(cfg.VAL_FILE,'rU') as vf:
             readerV = csv.reader(vf, delimiter=' ')
             valIms = list(readerV)
-        self.val_im_paths = [i[0] for i in valIms]
-        self.val_labels = [i[1] for i in valIms]
+        self._val_im_paths = [i[0] for i in valIms]
+        self._val_labels = [i[1] for i in valIms]
 
         if cfg.FLIPPED:
-            flipped_train_ims = [i.split('.')[0]+'_flip.jpg' for i in self.train_im_paths]
-            self.train_im_paths.extend(flipped_train_ims)
-            self.train_labels.extend(self.train_labels)
+            flipped_train_ims = [i.split('.')[0]+'_flip.jpg' for i in self._train_im_paths]
+            self._train_im_paths.extend(flipped_train_ims)
+            self._train_labels.extend(self._train_labels)
 
-            flipped_val_ims = [i.split('.')[0]+'_flip.jpg' for i in self.val_im_paths]
-            self.val_im_paths.extend(flipped_val_ims)
-            self.val_labels.extend(self.val_labels)
+            flipped_val_ims = [i.split('.')[0]+'_flip.jpg' for i in self._val_im_paths]
+            self._val_im_paths.extend(flipped_val_ims)
+            self._val_labels.extend(self._val_labels)
 
 if __name__ == '__main__':
     hotel = hoteldata()
