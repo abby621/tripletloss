@@ -30,7 +30,6 @@ def prep_im_for_blob(im):
     target_size = 224
     im = im.astype(np.float32, copy=False)
     im = cv2.resize(im,(cfg.IM_MEAN.shape[0],cfg.IM_MEAN.shape[1]),interpolation=cv2.INTER_LINEAR)
-    im = (im - np.min(im))/255
     im -= cfg.IM_MEAN
     im = cv2.resize(im, (224,224), interpolation=cv2.INTER_LINEAR)
     return im
