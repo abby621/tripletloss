@@ -78,7 +78,7 @@ class DataLayer(caffe.Layer):
     def setup(self, bottom, top):
         """Setup the RoIDataLayer."""
         # parse the layer parameter string, which must be valid YAML
-        layer_params = yaml.load(self.param_str_)
+        # layer_params = yaml.load(self.param_str_)
         self._batch_size = config.BATCH_SIZE
         self._triplet = self._batch_size/3
         assert self._batch_size % 3 == 0
