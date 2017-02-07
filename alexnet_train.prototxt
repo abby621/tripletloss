@@ -10,10 +10,10 @@ layer {
   transform_param {
     mirror: true
     crop_size: 227
-    mean_file: "/project/focus/datasets/hotel_chains/mean.binaryproto"
+    mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
   }
   data_param {
-    source: "/project/focus/datasets/hotel_chains/train_lmdb"
+    source: "/project/focus/datasets/tc_tripletloss/train_lmdb"
     batch_size: 256
     backend: LMDB
   }
@@ -29,10 +29,10 @@ layer {
   transform_param {
     mirror: false
     crop_size: 227
-    mean_file: "/project/focus/datasets/hotel_chains/mean.binaryproto"
+    mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
   }
   data_param {
-    source: "/project/focus/datasets/hotel_chains/val_lmdb"
+    source: "/project/focus/datasets/tc_tripletloss/val_lmdb"
     batch_size: 50
     backend: LMDB
   }
