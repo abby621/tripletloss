@@ -36,7 +36,6 @@ class DataLayer(caffe.Layer):
         train_im_label = self.data_container._train_im_labels[self._index]
 
         self._index = self._index + 1
-        print self._index
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
@@ -101,6 +100,7 @@ class DataLayer(caffe.Layer):
         blobs = self._get_next_minibatch()
 
         for blob_name, blob in blobs.iteritems():
+            print blob_name
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
             #top[top_ind].reshape(*(blob.shape))
