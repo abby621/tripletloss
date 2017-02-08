@@ -41,9 +41,9 @@ class TripletLayer(caffe.Layer):
             positive_minibatch_db.append(bottom[1].data[i])
             negative_minibatch_db.append(bottom[2].data[i])
 
-        print 'examples: ' + anchor_minibatch_db
-        print 'positive: ' + positive_minibatch_db
-        print 'negative: ' + negative_minibatch_db
+        print 'example: ' + anchor_minibatch_db[0]
+        print 'positive: ' + positive_minibatch_db[0]
+        print 'negative: ' + negative_minibatch_db[0]
         loss = float(0)
         self.no_residual_list = []
         for i in range(((bottom[0]).num)):
