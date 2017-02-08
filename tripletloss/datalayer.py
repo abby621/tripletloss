@@ -28,7 +28,7 @@ class DataLayer(caffe.Layer):
         # Sample to use for each image in this batch
         sample = []
         sample_labels = []
-        if self._index >= len(self.data_container._train_im_paths):
+        if self._index >= len(self.data_container._train_im_paths)-1:
             self._index = 0
 
         positive_examples = []
