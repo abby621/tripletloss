@@ -41,6 +41,12 @@ class DataLayer(caffe.Layer):
             self._index = self._index + 1
             if self._index >= len(self.data_container._train_im_paths):
                 self._index = 0
+                self._epoch += 1
+
+        if self._index % 10 == 0:
+            print 'Image: ' + self._index
+            print 'Epoch: ' + self._epoch
+        
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
@@ -88,6 +94,7 @@ class DataLayer(caffe.Layer):
 
         self.data_container =  hoteldata()
         self._index = 0
+        self._epoch = 0
 
         # data blob: holds a batch of N images, each with 3 channels
         # The height and width (100 x 100) are dummy values
