@@ -64,7 +64,6 @@ class TripletSelectLayer(caffe.Layer):
         top[2].data[...] = np.array(top_negative).astype(float32)
 
     def backward(self, top, propagate_down, bottom):
-
         for i in range(len(self.tripletlist)):
             if not i in self.no_residual_list:
                 bottom[0].diff[self.tripletlist[i][0]] = top[0].diff[i]

@@ -10,7 +10,7 @@ class hoteldata():
     global _val_labels
 
     def __init__(self):
-        with open(cfg.TRAIN_FILE,'rU') as tf:
+        with open(cfg.SAMPLE_FILE,'rU') as tf:
             readerT = csv.reader(tf, delimiter=' ')
             trainIms = list(readerT)
         self._train_im_paths = [i[0] for i in trainIms]

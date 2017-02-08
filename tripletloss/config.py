@@ -13,6 +13,8 @@ TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
 TEST_FILE = '/project/focus/datasets/tc_tripletloss/test.txt'
 # Validation lmdb
 VAL_FILE = '/project/focus/datasets/tc_tripletloss/val.txt'
+# Small sample subset
+SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
 
 # Snapshot iteration
 SNAPSHOT_ITERS = 10000

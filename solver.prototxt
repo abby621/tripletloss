@@ -10,5 +10,5 @@ max_iter: 400000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 5000
-snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs/vgg/fromsnapshot_"
+snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs/sample/"
 solver_mode: GPU

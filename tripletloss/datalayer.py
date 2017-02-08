@@ -96,8 +96,6 @@ class DataLayer(caffe.Layer):
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
         blobs = self._get_next_minibatch()
-        print 'labels: '
-        print blobs['labels']
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
