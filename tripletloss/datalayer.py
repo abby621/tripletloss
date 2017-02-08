@@ -28,7 +28,7 @@ class DataLayer(caffe.Layer):
         # Sample to use for each image in this batch
         sample = []
         sample_labels = []
-        if self._index >= len(self.data_container._train_im_paths)-1:
+        if self._index >= len(self.data_container._train_im_paths):
             self._index = 0
 
         positive_examples = []
@@ -39,6 +39,8 @@ class DataLayer(caffe.Layer):
             positive_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x==train_im_label and i!=self._index]
             negative_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x!=train_im_label]
             self._index = self._index + 1
+            if self._index >= len(self.data_container._train_im_paths):
+                self._index = 0
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
