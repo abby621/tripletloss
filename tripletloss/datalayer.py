@@ -118,5 +118,3 @@ if __name__ == '__main__':
     test = DataLayer()
     for i in range(500):
         blob = test._get_next_minibatch()
-        print blob["labels"]
-        print str(i),np.shape(blob["data"]),blob["labels"]#,blob
