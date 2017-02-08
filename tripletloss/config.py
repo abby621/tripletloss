@@ -21,7 +21,7 @@ SNAPSHOT_ITERS = 10000
 MAX_ITERS = 400000
 
 # The number of samples in each minibatch
-BATCH_SIZE = 90
+BATCH_SIZE = 30
 
 # Use flipped images also?
 FLIPPED = True
