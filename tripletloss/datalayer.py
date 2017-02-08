@@ -59,8 +59,7 @@ class DataLayer(caffe.Layer):
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
-             'labels': sample_labels,
-             'im_names': sample}
+             'labels': sample_labels}
         return blobs
 
     def _get_image_blob(self,sample):
@@ -97,7 +96,8 @@ class DataLayer(caffe.Layer):
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
         blobs = self._get_next_minibatch()
-        print blobs['im_names']
+        print 'labels: '
+        print blobs['labels']
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
