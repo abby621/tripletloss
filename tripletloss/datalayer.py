@@ -44,9 +44,9 @@ class DataLayer(caffe.Layer):
                 self._epoch += 1
 
         if self._index % 10 == 0:
-            print 'Image: ' + self._index
-            print 'Epoch: ' + self._epoch
-        
+            print 'Image: ' + str(self._index)
+            print 'Epoch: ' + str(self._epoch)
+
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
