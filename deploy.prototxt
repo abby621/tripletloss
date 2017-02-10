@@ -1,9 +1,5 @@
 name: "VGG_FACE_16_layers"
 input: "data"
-input_dim: 3
-input_dim: 1
-input_dim: 224
-input_dim: 224
 
 layer {
   name: "conv1_1"
