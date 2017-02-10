@@ -4,16 +4,7 @@ input_dim: 1
 input_dim: 3
 input_dim: 224
 input_dim: 224
-layer {
-  name: 'data'
-  type: 'Python'
-  top: 'data'
-  top: 'labels'
-  python_param {
-    module: 'datalayer'
-    layer: 'DataLayer'
-  }
-}
+
 layer {
   name: "conv1_1"
   type: "Convolution"
@@ -474,11 +465,11 @@ layer {
   bottom: "fc6"
   top: "fc7"
   param {
-    lr_mult: 10
+    lr_mult: 0
     decay_mult: 0
   }
   param {
-    lr_mult: 20
+    lr_mult: 0
     decay_mult: 0
   }
   inner_product_param {
@@ -503,49 +494,31 @@ layer {
     dropout_ratio: 0.5
   }
 }
-
-#======================softmax====================
-# layer {
-#  name: "fc9"
-#  type: "InnerProduct"
-#  bottom: "fc7"
-#  top: "fc9"
-#  param {
-#    lr_mult: 0
-#    decay_mult: 0
-#  }
-#  param {
-#    lr_mult: 0
-#    decay_mult: 0
-#  }
-#  inner_product_param {
-#    num_output: 997
-#    weight_filler {
-#      type: "xavier"
-#    }
-#  }
-# }
-# layer {
-#  name: "accuracy_1"
-#  type:  "Accuracy"
-#  bottom: "fc9"
-#  bottom: "labels"
-#  top: "accuracy"
-#  include: { phase: TEST }
-# }
-# layer {
-#  name: "loss_cls"
-#  type: "SoftmaxWithLoss"
-#  bottom: "fc9"
-#  bottom: "labels"
-#  top: "loss_cls"
-#  loss_weight: 1
-# }
+layer {
+  name: "fc9"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc9"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 997
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
 #====================tripletloss==================
 layer {
   name: "norm2"
   type: "Python"
-  bottom: "fc7"
+  bottom: "fc9"
   top: "norm2"
   python_param {
     module: "norm2layer"
@@ -567,4 +540,11 @@ layer {
       type: "xavier"
     }
   }
+}
+layer {
+  name: "loss_cls"
+  type: "Softmax"
+  bottom: "norm2"
+  top: "loss_cls"
+  loss_weight: 1
 }
