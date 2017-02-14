@@ -70,7 +70,6 @@ class DataLayer(caffe.Layer):
                 sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
                 sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
         example_triplets += self.data_container._train_im_paths[negative_examples[neg_index]]
-        example_triplets += ','
 
         with open('/project/focus/abby/tripletloss/example_triplets.csv','a') as f:
             f.write('%s\n' % example_triplets)
