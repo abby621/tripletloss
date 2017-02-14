@@ -65,7 +65,9 @@ class DataLayer(caffe.Layer):
                 sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
                 sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
 
-        print sample
+        with open('/project/focus/abby/tripletloss/example_triplets.csv','a') as f:
+            f.write('%s\n' % random.choice(sample))
+        
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
              'labels': sample_labels}
