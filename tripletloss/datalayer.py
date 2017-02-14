@@ -47,9 +47,12 @@ class DataLayer(caffe.Layer):
             print 'Image: ' + str(self._index)
             print 'Epoch: ' + str(self._epoch)
 
+        example_triplets = ''
         while len(sample) < self._triplet:
             sample.append(train_im_path)
             sample_labels.append(train_im_label)
+        example_triplets += train_im_path
+        example_triplets += ','
 
         # Sample positive samples
         while len(sample) < self._triplet*2:
@@ -57,6 +60,8 @@ class DataLayer(caffe.Layer):
             if (self.data_container._train_im_paths[positive_examples[pos_index]]) not in sample:
                 sample.append(self.data_container._train_im_paths[positive_examples[pos_index]])
                 sample_labels.append(self.data_container._train_im_labels[positive_examples[pos_index]])
+        example_triplets += self.data_container._train_im_paths[positive_examples[pos_index]]
+        example_triplets += ','
 
         # Sample negative samples
         while len(sample) < self._triplet*3:
@@ -64,10 +69,12 @@ class DataLayer(caffe.Layer):
             if (self.data_container._train_im_paths[negative_examples[neg_index]]) not in sample:
                 sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
                 sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
+        example_triplets += self.data_container._train_im_paths[negative_examples[neg_index]]
+        example_triplets += ','
 
         with open('/project/focus/abby/tripletloss/example_triplets.csv','a') as f:
-            f.write('%s\n' % random.choice(sample))
-        
+            f.write('%s\n' % example_triplets)
+
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
              'labels': sample_labels}
