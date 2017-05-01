@@ -75,8 +75,7 @@ class DataLayer(caffe.Layer):
         pos_norm = norm(loc=triplet_stats['pos_mean'],scale=triplet_stats['pos_std'])
         neg_norm = norm(los=triplet_stats['neg_mean'],scale=triplet_stats['neg_std'])
 
-        positive_examples = []
-        negative_examples = []
+        num_ims = len(self.data_container._train_im_paths)
         while len(positive_examples) < self._triplet*2 or len(negative_examples) < self._triplet*2:
             print 'Selecting triplets...'
             anchor_im_path = self.data_container._train_im_paths[self._index]
@@ -84,15 +83,29 @@ class DataLayer(caffe.Layer):
             anchor_im_feat = get_features(anchor_im_path,this_net)
 
             # include a candidate as a positive example if:
-            # x==anchor_im_label -- it is from the same hotel
-            # i!=self._index -- it is not the exact same image
-            # pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) < self._pos_thresh -- roughly, this image is in the self._pos_thresh closest positive images
-            positive_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x==anchor_im_label and i!=self._index and pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) < self._pos_thresh]
+            # it is from the same hotel
+            # it is not the exact same image
+            # roughly, this image is in the self._pos_thresh closest positive images
+            positive_examples = []
+            pos_ctr = 0
+            while len(positive_examples) < self._triplet*2 && pos_ctr < num_ims:
+                if self.data_container._train_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
+                    pos_score = pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[pos_ctr],this_net)))
+                    if pos_score < self._pos_thresh:
+                        positive_examples.append(pos_ctr)
+                pos_ctr += 1
 
             # include a candidate as a negative example if:
-            # x!=anchor_im_label -- it is from a different hotel
-            # neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) > self._neg_thresh -- roughly, this image is in the self._neg_thresh farthest images
-            negative_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x!=anchor_im_label and neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) > self._neg_thresh]
+            # it is from a different hotel
+            # roughly, this image is in the self._neg_thresh farthest images
+            negative_examples = []
+            neg_ctr = 0
+            while len(negative_examples) < self._triplet*2 && neg_ctr < num_ims:
+                if self.data_container._train_im_labels[neg_ctr]==anchor_im_label and neg_ctr != self._index:
+                    neg_score = neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[neg_ctr],this_net)))
+                    if neg_score > self._neg_thresh:
+                        negative_examples.append(neg_ctr)
+                neg_ctr += 1
 
             self._index = self._index + 1
             if self._index >= len(self.data_container._train_im_paths):
