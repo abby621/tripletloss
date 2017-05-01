@@ -88,7 +88,7 @@ class DataLayer(caffe.Layer):
             # roughly, this image is in the self._pos_thresh closest positive images
             positive_examples = []
             pos_ctr = 0
-            while len(positive_examples) < self._triplet*2 && pos_ctr < num_ims:
+            while len(positive_examples) < self._triplet*2 and pos_ctr < num_ims:
                 if self.data_container._train_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
                     pos_score = pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[pos_ctr],this_net)))
                     if pos_score < self._pos_thresh:
@@ -100,7 +100,7 @@ class DataLayer(caffe.Layer):
             # roughly, this image is in the self._neg_thresh farthest images
             negative_examples = []
             neg_ctr = 0
-            while len(negative_examples) < self._triplet*2 && neg_ctr < num_ims:
+            while len(negative_examples) < self._triplet*2 and neg_ctr < num_ims:
                 if self.data_container._train_im_labels[neg_ctr]==anchor_im_label and neg_ctr != self._index:
                     neg_score = neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[neg_ctr],this_net)))
                     if neg_score > self._neg_thresh:
