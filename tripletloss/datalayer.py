@@ -123,13 +123,13 @@ class DataLayer(caffe.Layer):
 
         # Sample positive examples
         for p in positive_examples:
-            sample.append(self.data_container._train_im_paths[positive_examples[p]])
-            sample_labels.append(self.data_container._train_im_labels[positive_examples[p]])
+            sample.append(self.data_container._train_im_paths[p])
+            sample_labels.append(self.data_container._train_im_labels[p])
 
         # Sample negative examples
         for n in negative_examples:
-            sample.append(self.data_container._train_im_paths[negative_examples[n]])
-            sample_labels.append(self.data_container._train_im_labels[negative_examples[n]])
+            sample.append(self.data_container._train_im_paths[n])
+            sample_labels.append(self.data_container._train_im_labels[n])
 
         print 'Triplets selected, loading into blob...'
         im_blob = self._get_image_blob(sample)
