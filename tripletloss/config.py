@@ -31,7 +31,7 @@ blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].reshape(256,256,3)
 
-CROP_SZ = 224
+CROP_SZ = 227
 
 TEST_NET = '/project/focus/abby/tripletloss/places_cnds_deploy.prototxt'
 TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
