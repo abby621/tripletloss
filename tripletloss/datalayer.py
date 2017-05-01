@@ -51,27 +51,22 @@ class DataLayer(caffe.Layer):
         # Sample to use for each image in this batch
         sample = []
         sample_labels = []
-        if self._index >= len(self.data_container._train_im_paths):
-            self._index = 0
 
         # recompute our triplet distribution function every 10k images
-        if self._index % 10000 == 0:
+        if self._index % 10000 == 0 and self._index != 0:
             print 'Copying the most recent snapshot to the most_recent path....'
             # copy the most recent snapshot to the 'most_recent.caffemodel' location
-            stat, most_recent = commands.getstatusoutput("ls -dtr1 /project/focus/abby/tripletloss/models/outputs/places_cnds/*.caffemodel | tail -1")
+            status, most_recent = commands.getstatusoutput("ls -dtr1 /project/focus/abby/tripletloss/models/outputs/places_cnds/*.caffemodel | tail -1")
             cp_cmd = 'cp ' + most_recent + ' /project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
             os.system(cp_cmd)
             # run the code to find and save the new triplet distribution parameters
             os.system("python /project/focus/abby/tripletloss/tripletloss/find_triplet_params.py /project/focus/abby/tripletloss/train.prototxt /project/focus/abby/tripletloss/models/outputs/vgg/most_recent.caffemodel")
-            # load this net for triplet computation
-            this_net = caffe.Net(config.TEST_NET, config.TEST_WEIGHTS, caffe.TEST)
 
         # load the triplet parameters and generate the distributions
         stat_file = '/project/focus/abby/tripletloss/params/triplet_stats.pickle'
         with open(stat_file,'rb') as f:
             triplet_stats = pickle.load(f)
         f.close()
-
         pos_norm = norm(loc=triplet_stats['pos_mean'],scale=triplet_stats['pos_std'])
         neg_norm = norm(los=triplet_stats['neg_mean'],scale=triplet_stats['neg_std'])
 
@@ -85,7 +80,7 @@ class DataLayer(caffe.Layer):
 
             anchor_im_path = self.data_container._train_im_paths[self._index]
             anchor_im_label = self.data_container._train_im_labels[self._index]
-            anchor_im_feat = get_features(anchor_im_path,this_net)
+            anchor_im_feat = get_features(anchor_im_path,self.test_net)
 
             # include a candidate as a positive example if:
             # it is from the same hotel
@@ -94,7 +89,9 @@ class DataLayer(caffe.Layer):
             pos_ctr = 0
             while len(positive_examples) < self._triplet*2 and pos_ctr < num_ims:
                 if self.data_container._train_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
-                    pos_score = pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[pos_ctr],this_net)))
+                    pos_feat = get_features(self.data_container._train_im_paths[pos_ctr],self.test_net)
+                    pos_dist = feat_dist(anchor_im_feat,pos_feat)
+                    pos_score = pos_norm.cdf(pos_dist)
                     if pos_score < self._pos_thresh:
                         positive_examples.append(pos_ctr)
                 pos_ctr += 1
@@ -105,10 +102,16 @@ class DataLayer(caffe.Layer):
             neg_ctr = 0
             while len(negative_examples) < self._triplet*2 and neg_ctr < num_ims:
                 if self.data_container._train_im_labels[neg_ctr]==anchor_im_label and neg_ctr != self._index:
-                    neg_score = neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_paths[neg_ctr],this_net)))
+                    neg_feat = get_features(self.data_container._train_im_paths[neg_ctr],self.test_net)
+                    neg_dist = feat_dist(anchor_im_feat,neg_feat)
+                    neg_score = neg_norm.cdf(neg_dist)
                     if neg_score > self._neg_thresh:
                         negative_examples.append(neg_ctr)
                 neg_ctr += 1
+
+            print 'Anchor image: ' + str(self._index)
+            print 'Positive examples: ' + str(len(positive_examples)) + ' (out of ' + str(pos_ctr) +' tried)'
+            print 'Negative examples: ' + str(len(negative_examples)) + ' (out of ' + str(neg_ctr) +' tried)'
 
             self._index = self._index + 1
             if self._index >= len(self.data_container._train_im_paths):
@@ -117,10 +120,6 @@ class DataLayer(caffe.Layer):
                 # TODO: Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
                 if self._pos_thresh + 0.05 <= 1: self._pos_thresh += 0.05
                 if self._neg_thresh - 0.05 >= 0: self._neg_thresh -= 0.05
-
-        if self._index % 10 == 0:
-            print 'Image: ' + str(self._index)
-            print 'Epoch: ' + str(self._epoch)
 
         while len(sample) < self._triplet:
             sample.append(anchor_im_path)
@@ -172,8 +171,11 @@ class DataLayer(caffe.Layer):
         self._index = 0
         self._epoch = 0
 
-        self._pos_thresh = 0.25
-        self._neg_thresh = 0.75
+        self._pos_thresh = 0.45
+        self._neg_thresh = 0.65
+
+        # load this net for triplet computation
+        self.test_net = caffe.Net(config.TEST_NET, config.TEST_WEIGHTS, caffe.TEST)
 
         # data blob: holds a batch of N images, each with 3 channels
         # The height and width (100 x 100) are dummy values
