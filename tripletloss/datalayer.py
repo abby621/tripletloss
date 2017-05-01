@@ -51,7 +51,7 @@ class DataLayer(caffe.Layer):
         # Sample to use for each image in this batch
         sample = []
         sample_labels = []
-        if self._index >= len(self.data_container._anchor_im_paths):
+        if self._index >= len(self.data_container._train_im_paths):
             self._index = 0
 
         # recompute our triplet distribution function every 10k images
@@ -79,23 +79,23 @@ class DataLayer(caffe.Layer):
         negative_examples = []
         while len(positive_examples) < self._triplet*2 or len(negative_examples) < self._triplet*2:
             print 'Selecting triplets...'
-            anchor_im_path = self.data_container._anchor_im_paths[self._index]
-            anchor_im_label = self.data_container._anchor_im_labels[self._index]
+            anchor_im_path = self.data_container._train_im_paths[self._index]
+            anchor_im_label = self.data_container._train_im_labels[self._index]
             anchor_im_feat = get_features(anchor_im_path,this_net)
 
             # include a candidate as a positive example if:
             # x==anchor_im_label -- it is from the same hotel
             # i!=self._index -- it is not the exact same image
-            # pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._anchor_im_labels[i],this_net))) < self._pos_thresh -- roughly, this image is in the self._pos_thresh closest positive images
-            positive_examples = [i for i,x in enumerate(self.data_container._anchor_im_labels) if x==anchor_im_label and i!=self._index and pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._anchor_im_labels[i],this_net))) < self._pos_thresh]
+            # pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) < self._pos_thresh -- roughly, this image is in the self._pos_thresh closest positive images
+            positive_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x==anchor_im_label and i!=self._index and pos_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) < self._pos_thresh]
 
             # include a candidate as a negative example if:
             # x!=anchor_im_label -- it is from a different hotel
-            # neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._anchor_im_labels[i],this_net))) > self._neg_thresh -- roughly, this image is in the self._neg_thresh farthest images
-            negative_examples = [i for i,x in enumerate(self.data_container._anchor_im_labels) if x!=anchor_im_label and neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._anchor_im_labels[i],this_net))) > self._neg_thresh]
+            # neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) > self._neg_thresh -- roughly, this image is in the self._neg_thresh farthest images
+            negative_examples = [i for i,x in enumerate(self.data_container._train_im_labels) if x!=anchor_im_label and neg_norm.cdf(feat_dist(anchor_im_feat,get_features(self.data_container._train_im_labels[i],this_net))) > self._neg_thresh]
 
             self._index = self._index + 1
-            if self._index >= len(self.data_container._anchor_im_paths):
+            if self._index >= len(self.data_container._train_im_paths):
                 self._index = 0
                 self._epoch += 1
                 # TODO: Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
@@ -113,16 +113,16 @@ class DataLayer(caffe.Layer):
         # Sample positive samples
         while len(sample) < self._triplet*2:
             pos_index = random.randint(0,len(positive_examples)-1)
-            if (self.data_container._anchor_im_paths[positive_examples[pos_index]]) not in sample:
-                sample.append(self.data_container._anchor_im_paths[positive_examples[pos_index]])
-                sample_labels.append(self.data_container._anchor_im_labels[positive_examples[pos_index]])
+            if (self.data_container._train_im_paths[positive_examples[pos_index]]) not in sample:
+                sample.append(self.data_container._train_im_paths[positive_examples[pos_index]])
+                sample_labels.append(self.data_container._train_im_labels[positive_examples[pos_index]])
 
         # Sample negative samples
         while len(sample) < self._triplet*3:
             neg_index = random.randint(0,len(negative_examples)-1)
-            if (self.data_container._anchor_im_paths[negative_examples[neg_index]]) not in sample:
-                sample.append(self.data_container._anchor_im_paths[negative_examples[neg_index]])
-                sample_labels.append(self.data_container._anchor_im_labels[negative_examples[neg_index]])
+            if (self.data_container._train_im_paths[negative_examples[neg_index]]) not in sample:
+                sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
+                sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
 
         print 'Triplets selected, loading into blob...'
         im_blob = self._get_image_blob(sample)
