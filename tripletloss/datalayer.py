@@ -73,7 +73,7 @@ class DataLayer(caffe.Layer):
         num_ims = len(self.data_container._train_im_paths)
         positive_examples = []
         negative_examples = []
-        while len(positive_examples) < self._triplet*2 or len(negative_examples) < self._triplet*2:
+        while len(positive_examples) < self._triplet or len(negative_examples) < self._triplet:
             print 'Selecting triplets...'
             positive_examples = []
             negative_examples = []
@@ -108,10 +108,6 @@ class DataLayer(caffe.Layer):
                     if neg_score > self._neg_thresh:
                         negative_examples.append(neg_ctr)
                 neg_ctr += 1
-
-            print 'Anchor image: ' + str(self._index)
-            print 'Positive examples: ' + str(len(positive_examples)) + ' (out of ' + str(pos_ctr) +' tried)'
-            print 'Negative examples: ' + str(len(negative_examples)) + ' (out of ' + str(neg_ctr) +' tried)'
 
             self._index = self._index + 1
             if self._index >= len(self.data_container._train_im_paths):
