@@ -74,7 +74,6 @@ class DataLayer(caffe.Layer):
         positive_examples = []
         negative_examples = []
         while len(positive_examples) < self._triplet or len(negative_examples) < self._triplet:
-            print 'Selecting triplets...'
             positive_examples = []
             negative_examples = []
 
@@ -131,7 +130,6 @@ class DataLayer(caffe.Layer):
             sample.append(self.data_container._train_im_paths[n])
             sample_labels.append(self.data_container._train_im_labels[n])
 
-        print 'Triplets selected, loading into blob...'
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
              'labels': sample_labels}
