@@ -4,15 +4,19 @@ input_dim: 10
 input_dim: 3
 input_dim: 227
 input_dim: 227
-layers {
+layer {
   name: "conv1"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "data"
   top: "conv1"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 64
     pad: 1
@@ -28,15 +32,15 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu1"
-  type: RELU
+  type: "ReLU"
   bottom: "conv1"
   top: "conv1"
 }
-layers {
+layer {
   name: "pool1"
-  type: POOLING
+  type: "Pooling"
   bottom: "conv1"
   top: "pool1"
   pooling_param {
@@ -45,16 +49,19 @@ layers {
     stride: 2
   }
 }
-
-layers {
+layer {
   name: "conv2"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "pool1"
   top: "conv2"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 128
     pad: 1
@@ -69,15 +76,15 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu2"
-  type: RELU
+  type: "ReLU"
   bottom: "conv2"
   top: "conv2"
 }
-layers {
+layer {
   name: "pool2"
-  type: POOLING
+  type: "Pooling"
   bottom: "conv2"
   top: "pool2"
   pooling_param {
@@ -86,16 +93,19 @@ layers {
     stride: 2
   }
 }
-
-layers {
+layer {
   name: "conv3_1"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "pool2"
   top: "conv3_1"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 256
     pad: 1
@@ -110,21 +120,25 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu3_1"
-  type: RELU
+  type: "ReLU"
   bottom: "conv3_1"
   top: "conv3_1"
 }
-layers {
+layer {
   name: "conv3_2"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "conv3_1"
   top: "conv3_2"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 256
     pad: 1
@@ -139,15 +153,15 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu3_2"
-  type: RELU
+  type: "ReLU"
   bottom: "conv3_2"
   top: "conv3_2"
 }
-layers {
+layer {
   name: "pool3"
-  type: POOLING
+  type: "Pooling"
   bottom: "conv3_2"
   top: "pool3"
   pooling_param {
@@ -156,15 +170,19 @@ layers {
     stride: 2
   }
 }
-layers {
+layer {
   name: "conv4_1"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "pool3"
   top: "conv4_1"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 512
     pad: 1
@@ -179,21 +197,25 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu4_1"
-  type: RELU
+  type: "ReLU"
   bottom: "conv4_1"
   top: "conv4_1"
 }
-layers {
+layer {
   name: "conv4_2"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "conv4_1"
   top: "conv4_2"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 512
     pad: 1
@@ -208,15 +230,15 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu4_2"
-  type: RELU
+  type: "ReLU"
   bottom: "conv4_2"
   top: "conv4_2"
 }
-layers {
+layer {
   name: "pool4"
-  type: POOLING
+  type: "Pooling"
   bottom: "conv4_2"
   top: "pool4"
   pooling_param {
@@ -225,15 +247,19 @@ layers {
     stride: 2
   }
 }
-layers {
+layer {
   name: "conv5_1"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "pool4"
   top: "conv5_1"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 512
     pad: 1
@@ -248,21 +274,25 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu5_1"
-  type: RELU
+  type: "ReLU"
   bottom: "conv5_1"
   top: "conv5_1"
 }
-layers {
+layer {
   name: "conv5_2"
-  type: CONVOLUTION
+  type: "Convolution"
   bottom: "conv5_1"
   top: "conv5_2"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   convolution_param {
     num_output: 512
     pad: 1
@@ -277,15 +307,15 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu5_2"
-  type: RELU
+  type: "ReLU"
   bottom: "conv5_2"
   top: "conv5_2"
 }
-layers {
+layer {
   name: "pool5"
-  type: POOLING
+  type: "Pooling"
   bottom: "conv5_2"
   top: "pool5"
   pooling_param {
@@ -294,16 +324,19 @@ layers {
     stride: 2
   }
 }
-
-layers {
+layer {
   name: "fc6"
-  type: INNER_PRODUCT
+  type: "InnerProduct"
   bottom: "pool5"
   top: "fc6"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   inner_product_param {
     num_output: 4096
     weight_filler {
@@ -316,30 +349,34 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu6"
-  type: RELU
+  type: "ReLU"
   bottom: "fc6"
   top: "fc6"
 }
-layers {
+layer {
   name: "drop6"
-  type: DROPOUT
+  type: "Dropout"
   bottom: "fc6"
   top: "fc6"
   dropout_param {
     dropout_ratio: 0.5
   }
 }
-layers {
+layer {
   name: "fc7"
-  type: INNER_PRODUCT
+  type: "InnerProduct"
   bottom: "fc6"
   top: "fc7"
-  blobs_lr: 1
-  blobs_lr: 2
-  weight_decay: 1
-  weight_decay: 0
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
   inner_product_param {
     num_output: 4096
     weight_filler {
@@ -352,24 +389,24 @@ layers {
     }
   }
 }
-layers {
+layer {
   name: "relu7"
-  type: RELU
+  type: "ReLU"
   bottom: "fc7"
   top: "fc7"
 }
-layers {
+layer {
   name: "drop7"
-  type: DROPOUT
+  type: "Dropout"
   bottom: "fc7"
   top: "fc7"
   dropout_param {
     dropout_ratio: 0.5
   }
 }
-layers {
+layer {
   name: "fc8"
-  type: INNER_PRODUCT
+  type: "InnerProduct"
   bottom: "fc7"
   top: "fc8"
   inner_product_param {
