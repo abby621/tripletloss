@@ -100,7 +100,7 @@ class DataLayer(caffe.Layer):
             # roughly, this image is in the self._neg_thresh farthest images
             neg_ctr = 0
             while len(negative_examples) < self._triplet and neg_ctr < num_ims:
-                if self.data_container._train_im_labels[neg_ctr]==anchor_im_label and neg_ctr != self._index:
+                if self.data_container._train_im_labels[neg_ctr]!=anchor_im_label and neg_ctr != self._index:
                     neg_feat = get_features(self.data_container._train_im_paths[neg_ctr],self.test_net)
                     neg_dist = feat_dist(anchor_im_feat,neg_feat)
                     neg_score = neg_norm.cdf(neg_dist)
