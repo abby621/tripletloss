@@ -1,5 +1,5 @@
 name: "CaffeNet"
-layer {
+layers {
   name: 'data'
   type: 'Python'
   top: 'data'
