@@ -113,7 +113,7 @@ class DataLayer(caffe.Layer):
             if self._index >= len(self.data_container._train_im_paths):
                 self._index = 0
                 self._epoch += 1
-                # TODO: Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
+                # Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
                 if self._pos_thresh + 0.05 <= 1: self._pos_thresh += 0.05
                 if self._neg_thresh - 0.05 >= 0: self._neg_thresh -= 0.05
 
@@ -121,19 +121,15 @@ class DataLayer(caffe.Layer):
             sample.append(anchor_im_path)
             sample_labels.append(anchor_im_label)
 
-        # Sample positive samples
-        while len(sample) < self._triplet*2:
-            pos_index = random.randint(0,len(positive_examples)-1)
-            if (self.data_container._train_im_paths[positive_examples[pos_index]]) not in sample:
-                sample.append(self.data_container._train_im_paths[positive_examples[pos_index]])
-                sample_labels.append(self.data_container._train_im_labels[positive_examples[pos_index]])
+        # Sample positive examples
+        for p in positive_examples:
+            sample.append(self.data_container._train_im_paths[positive_examples[p]])
+            sample_labels.append(self.data_container._train_im_labels[positive_examples[p]])
 
-        # Sample negative samples
-        while len(sample) < self._triplet*3:
-            neg_index = random.randint(0,len(negative_examples)-1)
-            if (self.data_container._train_im_paths[negative_examples[neg_index]]) not in sample:
-                sample.append(self.data_container._train_im_paths[negative_examples[neg_index]])
-                sample_labels.append(self.data_container._train_im_labels[negative_examples[neg_index]])
+        # Sample negative examples
+        for n in negative_examples:
+            sample.append(self.data_container._train_im_paths[negative_examples[n]])
+            sample_labels.append(self.data_container._train_im_labels[negative_examples[n]])
 
         print 'Triplets selected, loading into blob...'
         im_blob = self._get_image_blob(sample)
