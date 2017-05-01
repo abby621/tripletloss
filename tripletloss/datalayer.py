@@ -76,8 +76,13 @@ class DataLayer(caffe.Layer):
         neg_norm = norm(los=triplet_stats['neg_mean'],scale=triplet_stats['neg_std'])
 
         num_ims = len(self.data_container._train_im_paths)
+        positive_examples = []
+        negative_examples = []
         while len(positive_examples) < self._triplet*2 or len(negative_examples) < self._triplet*2:
             print 'Selecting triplets...'
+            positive_examples = []
+            negative_examples = []
+
             anchor_im_path = self.data_container._train_im_paths[self._index]
             anchor_im_label = self.data_container._train_im_labels[self._index]
             anchor_im_feat = get_features(anchor_im_path,this_net)
@@ -86,7 +91,6 @@ class DataLayer(caffe.Layer):
             # it is from the same hotel
             # it is not the exact same image
             # roughly, this image is in the self._pos_thresh closest positive images
-            positive_examples = []
             pos_ctr = 0
             while len(positive_examples) < self._triplet*2 and pos_ctr < num_ims:
                 if self.data_container._train_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
@@ -98,7 +102,6 @@ class DataLayer(caffe.Layer):
             # include a candidate as a negative example if:
             # it is from a different hotel
             # roughly, this image is in the self._neg_thresh farthest images
-            negative_examples = []
             neg_ctr = 0
             while len(negative_examples) < self._triplet*2 and neg_ctr < num_ims:
                 if self.data_container._train_im_labels[neg_ctr]==anchor_im_label and neg_ctr != self._index:
