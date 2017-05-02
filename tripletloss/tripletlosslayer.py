@@ -57,6 +57,7 @@ class TripletLayer(caffe.Layer):
                 print ('loss:'+' diff: ' + str(abs(ap-an)) + ' ap:'+str(ap)+' '+'an:'+str(an))
             if _loss == 0 :
                 self.no_residual_list.append(i)
+                print 'Adding ', i, ' to no residual list'
             loss += _loss
 
         loss = (loss/(2*(bottom[0]).num))
