@@ -26,7 +26,7 @@ class SolverWrapper(object):
         self.output_dir = output_dir
 
         caffe.set_mode_gpu()
-        caffe.set_device(3)
+        caffe.set_device(2)
         self.solver = caffe.SGDSolver(solver_prototxt)
         if pretrained_model is not None:
             print ('Loading pretrained model '
