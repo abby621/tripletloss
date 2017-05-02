@@ -43,13 +43,13 @@ class TripletSelectLayer(caffe.Layer):
             a_p = archor_feature - positive_feature
             ap = np.dot(a_p,a_p)
             aps[i+self.triplet] = ap
-        aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
+        # aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
         for i in range(self.triplet):
             negative_feature = bottom[0].data[i+self.triplet*2]
             a_n = archor_feature - negative_feature
             an = np.dot(a_n,a_n)
             ans[i+self.triplet*2] = an
-        ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
+        # ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
 
         for i in range(self.triplet):
             top_archor.append(bottom[0].data[i])

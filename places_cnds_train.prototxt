@@ -536,11 +536,11 @@ layer {
   bottom: "fc6"
   top: "fc7"
   param {
-    lr_mult: 10
+    lr_mult: 1
     decay_mult: 1
   }
   param {
-    lr_mult: 20
+    lr_mult: 2
     decay_mult: 0
   }
   inner_product_param {
@@ -571,25 +571,45 @@ layer {
   }
 }
 #====================tripletloss==================
+#layer {
+#  name: "norm2"
+#  type: "Python"
+#  bottom: "fc7"
+#  top: "norm2"
+#  python_param {
+#    module: "norm2layer"
+#    layer: "Norm2Layer"
+#  }
+#}
+#layer {
+#  name: "fc9_1"
+#  type: "InnerProduct"
+#  bottom: "norm2"
+#  top: "fc9_1"
+#  param {
+#     lr_mult: 10
+#     decay_mult: 0
+#   }
+#   inner_product_param {
+#     num_output: 512
+#     weight_filler {
+#       type: "xavier"
+#     }
+#   }
+# }
 layer {
-  name: "norm2"
-  type: "Python"
-  bottom: "fc7"
-  top: "norm2"
-  python_param {
-    module: "norm2layer"
-    layer: "Norm2Layer"
-  }
-}
-layer {
-  name: "fc9_1"
-  type: "InnerProduct"
-  bottom: "norm2"
-  top: "fc9_1"
-  param {
+ name: "fc9_2"
+ type: "InnerProduct"
+ bottom: "fc7"
+ top: "fc9_2"
+ param {
     lr_mult: 10
     decay_mult: 0
   }
+  param {
+     lr_mult: 20
+     decay_mult: 0
+   }
   inner_product_param {
     num_output: 512
     weight_filler {
@@ -597,11 +617,10 @@ layer {
     }
   }
 }
-#add activation layer may increase the feature's expression
 layer {
   name: "triplet_select"
   type: "Python"
-  bottom: "fc9_1"
+  bottom: "fc9_2"
   bottom: "labels"
   top: "archor"
   top: "positive"
