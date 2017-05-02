@@ -132,8 +132,9 @@ class DataLayer(caffe.Layer):
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
-             'labels': sample_labels}
-        print blobs
+             'labels': sample_labels,
+             'paths': sample}
+        print blobs['labels'],blobs['paths']
         return blobs
 
     def _get_image_blob(self,sample):
