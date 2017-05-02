@@ -42,6 +42,8 @@ IM_MEAN = arr[0].mean(1).mean(1)
 
 CROP_SZ = 227
 
+TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
+
 TEST_NET = '/project/focus/abby/tripletloss/places_cnds_deploy.prototxt'
 TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
 TEST_LAYER = 'fc7'
