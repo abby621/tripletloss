@@ -165,7 +165,8 @@ class DataLayer(caffe.Layer):
         assert self._batch_size % 3 == 0
         self._name_to_top_map = {
             'data': 0,
-            'labels': 1}
+            'labels': 1,
+            'paths': 2}
 
         self.data_container =  hoteldata()
         self._index = 0
