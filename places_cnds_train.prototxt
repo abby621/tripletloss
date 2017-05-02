@@ -596,7 +596,7 @@ layer {
  type:  "Accuracy"
  bottom: "fc9"
  bottom: "labels"
- top: "accuracy"
+ top: "accuracy_1"
  include: { phase: TEST }
 }
 layer {
