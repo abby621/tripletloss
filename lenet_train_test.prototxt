@@ -1,46 +1,36 @@
 name: "LeNet"
-# layer {
-#   name: "mnist"
-#   type: "Data"
-#   top: "data"
-#   top: "label"
-#   include {
-#     phase: TRAIN
-#   }
-#   transform_param {
-#     scale: 0.00390625
-#   }
-#   data_param {
-#     source: "/project/focus/datasets/mnist/mnist_train_lmdb"
-#     batch_size: 32
-#     backend: LMDB
-#   }
-# }
-# layer {
-#   name: "mnist"
-#   type: "Data"
-#   top: "data"
-#   top: "label"
-#   include {
-#     phase: TEST
-#   }
-#   transform_param {
-#     scale: 0.00390625
-#   }
-#   data_param {
-#     source: "/project/focus/datasets/mnist/mnist_test_lmdb"
-#     batch_size: 32
-#     backend: LMDB
-#   }
-# }
 layer {
-  name: 'data'
-  type: "Python"
-  top: 'data'
-  top: 'label'
-  python_param {
-    module: 'datalayer'
-    layer: 'DataLayer'
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "/project/focus/datasets/mnist/mnist_train_lmdb"
+    batch_size: 32
+    backend: LMDB
+  }
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "/project/focus/datasets/mnist/mnist_test_lmdb"
+    batch_size: 32
+    backend: LMDB
   }
 }
 layer {
