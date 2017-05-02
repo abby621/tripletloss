@@ -80,8 +80,10 @@ class SolverWrapper(object):
 if __name__ == '__main__':
     """Train network."""
     solver_prototxt = '/project/focus/abby/tripletloss/places_cnds_solver.prototxt'
-    output_dir = '/project/focus/abby/tripletloss/models/outputs/places_cnds/'
-    pretrained_model = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
+    # output_dir = '/project/focus/abby/tripletloss/models/outputs/places_cnds/'
+    # pretrained_model = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
+    output_dir = '/project/focus/abby/tripletloss/models/outputs/mnist/'
+    pretrained_model = None
     max_iters = config.MAX_ITERS
     sw = SolverWrapper(solver_prototxt,output_dir,pretrained_model)
 

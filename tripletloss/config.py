@@ -4,12 +4,21 @@ from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 import cv2
 
+# # Training lmdb
+# TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
+# # Test lmdb
+# TEST_FILE = '/project/focus/datasets/tc_tripletloss/test.txt'
+# # Validation lmdb
+# VAL_FILE = '/project/focus/datasets/tc_tripletloss/val.txt'
+# # Small sample subset
+# SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
+
 # Training lmdb
-TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
+TRAIN_FILE = '/project/focus/datasets/mnist/train.txt'
 # Test lmdb
-TEST_FILE = '/project/focus/datasets/tc_tripletloss/test.txt'
+TEST_FILE = '/project/focus/datasets/mnist/test.txt'
 # Validation lmdb
-VAL_FILE = '/project/focus/datasets/tc_tripletloss/val.txt'
+VAL_FILE = '/project/focus/datasets/mnist/test.txt'
 # Small sample subset
 SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
 

@@ -570,56 +570,93 @@ layer {
     dropout_ratio: 0.5
   }
 }
-#====================tripletloss==================
+#======================softmax====================
 layer {
- name: "norm2"
- type: "Python"
+ name: "fc9"
+ type: "InnerProduct"
  bottom: "fc7"
- top: "norm2"
- python_param {
-   module: "norm2layer"
-   layer: "Norm2Layer"
+ top: "fc9"
+ param {
+   lr_mult: 0
+   decay_mult: 0
+ }
+ param {
+   lr_mult: 0
+   decay_mult: 0
+ }
+ inner_product_param {
+   num_output: 10
+   weight_filler {
+     type: "xavier"
+   }
  }
 }
 layer {
- name: "fc9_1"
- type: "InnerProduct"
- bottom: "norm2"
- top: "fc9_1"
- param {
-    lr_mult: 10
-    decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 512
-    weight_filler {
-      type: "xavier"
-    }
-  }
+ name: "accuracy_1"
+ type:  "Accuracy"
+ bottom: "fc9"
+ bottom: "labels"
+ top: "accuracy"
+ include: { phase: TEST }
 }
 layer {
-  name: "triplet_select"
-  type: "Python"
-  bottom: "fc9_1"
-  bottom: "labels"
-  top: "anchor"
-  top: "positive"
-  top: "negative"
-  python_param {
-    module: "tripletselectlayer"
-    layer: "TripletSelectLayer"
-  }
+ name: "loss_cls"
+ type: "SoftmaxWithLoss"
+ bottom: "fc9"
+ bottom: "labels"
+ top: "loss_cls"
+ loss_weight: 1
 }
-layer {
-  name: "tripletloss"
-  type: "Python"
-  bottom: "anchor"
-  bottom: "positive"
-  bottom: "negative"
-  top: "tripletloss"
-  python_param {
-    module: "tripletlosslayer"
-    layer: "TripletLayer"
-  }
-  loss_weight: 10
-}
+# #====================tripletloss==================
+# layer {
+#  name: "norm2"
+#  type: "Python"
+#  bottom: "fc7"
+#  top: "norm2"
+#  python_param {
+#    module: "norm2layer"
+#    layer: "Norm2Layer"
+#  }
+# }
+# layer {
+#  name: "fc9_1"
+#  type: "InnerProduct"
+#  bottom: "norm2"
+#  top: "fc9_1"
+#  param {
+#     lr_mult: 10
+#     decay_mult: 0
+#   }
+#   inner_product_param {
+#     num_output: 512
+#     weight_filler {
+#       type: "xavier"
+#     }
+#   }
+# }
+# layer {
+#   name: "triplet_select"
+#   type: "Python"
+#   bottom: "fc9_1"
+#   bottom: "labels"
+#   top: "anchor"
+#   top: "positive"
+#   top: "negative"
+#   python_param {
+#     module: "tripletselectlayer"
+#     layer: "TripletSelectLayer"
+#   }
+# }
+# layer {
+#   name: "tripletloss"
+#   type: "Python"
+#   bottom: "anchor"
+#   bottom: "positive"
+#   bottom: "negative"
+#   top: "tripletloss"
+#   python_param {
+#     module: "tripletlosslayer"
+#     layer: "TripletLayer"
+#   }
+#   loss_weight: 1
+# }

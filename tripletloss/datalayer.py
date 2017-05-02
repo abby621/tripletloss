@@ -60,7 +60,7 @@ class DataLayer(caffe.Layer):
             cp_cmd = 'cp ' + most_recent + ' /project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
             os.system(cp_cmd)
             # run the code to find and save the new triplet distribution parameters
-            os.system("python /project/focus/abby/tripletloss/tripletloss/find_triplet_params.py /project/focus/abby/tripletloss/train.prototxt /project/focus/abby/tripletloss/models/outputs/vgg/most_recent.caffemodel")
+            os.system("python /project/focus/abby/tripletloss/tripletloss/find_triplet_params.py /project/focus/abby/tripletloss/places_cnds_train.prototxt /project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel")
 
         # load the triplet parameters and generate the distributions
         stat_file = '/project/focus/abby/tripletloss/params/triplet_stats.pickle'
