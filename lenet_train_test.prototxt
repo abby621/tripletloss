@@ -37,7 +37,7 @@ layer {
   name: 'data'
   type: "Python"
   top: 'data'
-  top: 'labels'
+  top: 'label'
   python_param {
     module: 'datalayer'
     layer: 'DataLayer'
