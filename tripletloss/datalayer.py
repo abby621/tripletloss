@@ -80,7 +80,8 @@ class DataLayer(caffe.Layer):
 
             anchor_im_path = self.data_container._train_im_paths[self._index]
             anchor_im_label = self.data_container._train_im_labels[self._index]
-            anchor_im_feat = get_features(anchor_im_path,self.test_net)
+            if config.TRIPLET_TRAINING:
+                anchor_im_feat = get_features(anchor_im_path,self.test_net)
 
             # include a candidate as a positive example if:
             # it is from the same hotel
