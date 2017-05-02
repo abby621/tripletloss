@@ -1,6 +1,6 @@
 net: "/project/focus/abby/tripletloss/places_cnds_train.prototxt"
 test_iter: 1
-test_interval: 1000
+test_interval: 100
 base_lr: 0.0001
 lr_policy: "step"
 gamma: 0.1
