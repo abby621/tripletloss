@@ -346,7 +346,7 @@ layer {
   name: "accuracy_DSN_conv3"
   type: "Accuracy"
   bottom: "fc8_DSN_conv3"
-  bottom: "labels"
+  bottom: "label"
   top: "accuracy_DSN_conv3"
   include {
     phase: TEST
@@ -356,7 +356,7 @@ layer {
   name: "loss_DSN_conv3"
   type: "SoftmaxWithLoss"
   bottom: "fc8_DSN_conv3"
-  bottom: "labels"
+  bottom: "label"
   top: "loss_DSN_conv3"
   loss_weight: 0.4
 }
