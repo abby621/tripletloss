@@ -616,10 +616,10 @@ layer {
   bottom: "anchor"
   bottom: "positive"
   bottom: "negative"
-  top: "loss"
+  top: "tripletloss"
   python_param {
     module: "tripletlosslayer"
     layer: "TripletLayer"
   }
-  loss_weight: 1
+  loss_weight: 10
 }
