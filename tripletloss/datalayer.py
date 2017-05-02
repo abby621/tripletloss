@@ -133,17 +133,16 @@ class DataLayer(caffe.Layer):
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
              'labels': sample_labels}
+        print blobs
         return blobs
 
     def _get_image_blob(self,sample):
         im_blob = []
         labels_blob = []
-        print sample
         for i in range(len(sample)):
             im = cv2.imread(sample[i])
             im = prep_im_for_blob(im)
             im_blob.append(im)
-            labels_blob.append(self.data_container._train_im_labels[i])
         # Create a blob to hold the input images
         blob = im_list_to_blob(im_blob)
         return blob
