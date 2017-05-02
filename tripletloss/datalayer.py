@@ -140,9 +140,7 @@ class DataLayer(caffe.Layer):
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
-             'labels': sample_labels,
-             'paths': sample}
-        print blobs['labels'],blobs['paths']
+             'labels': sample_labels}
         return blobs
 
     def _get_image_blob(self,sample):
@@ -165,8 +163,7 @@ class DataLayer(caffe.Layer):
         assert self._batch_size % 3 == 0
         self._name_to_top_map = {
             'data': 0,
-            'labels': 1,
-            'paths': 2}
+            'labels': 1}
 
         self.data_container =  hoteldata()
         self._index = 0
