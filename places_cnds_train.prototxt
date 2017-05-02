@@ -571,45 +571,25 @@ layer {
   }
 }
 #====================tripletloss==================
-#layer {
-#  name: "norm2"
-#  type: "Python"
-#  bottom: "fc7"
-#  top: "norm2"
-#  python_param {
-#    module: "norm2layer"
-#    layer: "Norm2Layer"
-#  }
-#}
-#layer {
-#  name: "fc9_1"
-#  type: "InnerProduct"
-#  bottom: "norm2"
-#  top: "fc9_1"
-#  param {
-#     lr_mult: 10
-#     decay_mult: 0
-#   }
-#   inner_product_param {
-#     num_output: 512
-#     weight_filler {
-#       type: "xavier"
-#     }
-#   }
-# }
 layer {
- name: "fc9_2"
- type: "InnerProduct"
+ name: "norm2"
+ type: "Python"
  bottom: "fc7"
- top: "fc9_2"
+ top: "norm2"
+ python_param {
+   module: "norm2layer"
+   layer: "Norm2Layer"
+ }
+}
+layer {
+ name: "fc9_1"
+ type: "InnerProduct"
+ bottom: "norm2"
+ top: "fc9_1"
  param {
     lr_mult: 10
     decay_mult: 0
   }
-  param {
-     lr_mult: 20
-     decay_mult: 0
-   }
   inner_product_param {
     num_output: 512
     weight_filler {
@@ -620,9 +600,9 @@ layer {
 layer {
   name: "triplet_select"
   type: "Python"
-  bottom: "fc9_2"
+  bottom: "fc9_1"
   bottom: "labels"
-  top: "archor"
+  top: "anchor"
   top: "positive"
   top: "negative"
   python_param {
@@ -633,7 +613,7 @@ layer {
 layer {
   name: "tripletloss"
   type: "Python"
-  bottom: "archor"
+  bottom: "anchor"
   bottom: "positive"
   bottom: "negative"
   top: "loss"

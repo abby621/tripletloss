@@ -569,7 +569,7 @@ layer {
   type: "Python"
   bottom: "fc9_1"
   bottom: "labels"
-  top: "archor"
+  top: "anchor"
   top: "positive"
   top: "negative"
   python_param {
@@ -580,7 +580,7 @@ layer {
 layer {
   name: "tripletloss"
   type: "Python"
-  bottom: "archor"
+  bottom: "anchor"
   bottom: "positive"
   bottom: "negative"
   top: "loss"

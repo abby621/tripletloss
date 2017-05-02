@@ -6,7 +6,7 @@
 
 """The data layer used during training to train the network.
    This is a example for online triplet selection
-   Each minibatch contains a set of archor-positive pairs, random select negative exemplar
+   Each minibatch contains a set of anchor-positive pairs, random select negative exemplar
 """
 
 import caffe

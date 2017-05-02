@@ -28,7 +28,7 @@ class TripletSelectLayer(caffe.Layer):
 
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
-        top_archor = []
+        top_anchor = []
         top_positive = []
         top_negative = []
         labels = []
@@ -37,29 +37,29 @@ class TripletSelectLayer(caffe.Layer):
         aps = {}
         ans = {}
 
-        archor_feature = bottom[0].data[0]
+        anchor_feature = bottom[0].data[0]
         for i in range(self.triplet):
             positive_feature = bottom[0].data[i+self.triplet]
-            a_p = archor_feature - positive_feature
+            a_p = anchor_feature - positive_feature
             ap = np.dot(a_p,a_p)
             aps[i+self.triplet] = ap
         aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
         for i in range(self.triplet):
             negative_feature = bottom[0].data[i+self.triplet*2]
-            a_n = archor_feature - negative_feature
+            a_n = anchor_feature - negative_feature
             an = np.dot(a_n,a_n)
             ans[i+self.triplet*2] = an
         ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
 
         for i in range(self.triplet):
-            top_archor.append(bottom[0].data[i])
+            top_anchor.append(bottom[0].data[i])
             top_positive.append(bottom[0].data[aps[i][0]])
             top_negative.append(bottom[0].data[ans[i][0]])
             if aps[i][1] >= ans[i][1]:
                self.no_residual_list.append(i)
             self.tripletlist.append([i,aps[i][0],ans[i][0]])
 
-        top[0].data[...] = np.array(top_archor).astype(float32)
+        top[0].data[...] = np.array(top_anchor).astype(float32)
         top[1].data[...] = np.array(top_positive).astype(float32)
         top[2].data[...] = np.array(top_negative).astype(float32)
 
