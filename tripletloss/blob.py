@@ -27,8 +27,7 @@ def im_list_to_blob(ims):
     return blob
 
 def prep_im_for_blob(im):
-    target_size = 224
     im = im.astype(np.float32, copy=False)
     im -= cfg.IM_MEAN
-    im = cv2.resize(im, (224,224), interpolation=cv2.INTER_LINEAR)
+    im = cv2.resize(im, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
     return im
