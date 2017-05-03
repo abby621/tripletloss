@@ -12,7 +12,7 @@ import os, sys
 import config
 
 """
-Command: python find_triplet_params.py /project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle /project/focus/abby/tripletloss/lenet_train_test.prototxt /project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel
+Command: python find_triplet_params_lenet.py /project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle /project/focus/abby/tripletloss/lenet_train_test.prototxt /project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel
 """
 help = """
     Command format: python find_triplet_params.py stat_file net_file weights_file
@@ -82,9 +82,9 @@ def get_triplet_stats(stat_file,net_model,net_weights):
     pos_dists = []
     neg_dists = []
     for triplet in random_triplets:
-        anchor_feats = getFeatures(triplet[0],net,config.CROP_SZ,featLayer,config.IM_MEAN)
-        pos_feats = getFeatures(triplet[1],net,config.CROP_SZ,featLayer,config.IM_MEAN)
-        neg_feats = getFeatures(triplet[2],net,config.CROP_SZ,featLayer,config.IM_MEAN)
+        anchor_feats = getFeatures(triplet[0],net,featLayer)
+        pos_feats = getFeatures(triplet[1],net,featLayer)
+        neg_feats = getFeatures(triplet[2],net,featLayer)
 
         posDist = (anchor_feats - pos_feats)**2
         posDist = np.sum(posDist,axis=1)
