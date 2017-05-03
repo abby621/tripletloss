@@ -33,7 +33,6 @@ def getFeatures(im,net,featLayer):
         orig_im = caffe.io.load_image(im)
     else:
         orig_im = caffe.io.load_image(im,color=False).squeeze()
-    print orig_im.shape
     caffe_input = transformer.preprocess('data',orig_im)
     net.blobs['data'].data[...] = caffe_input
     out = net.forward()
