@@ -78,8 +78,8 @@ class DataLayer(caffe.Layer):
         im_order = range(num_ims)
         random.shuffle(im_order)
 
-        shuffled_im_paths = self.data_container._train_im_paths[im_order]
-        shuffled_im_labels = self.data_container._train_im_labels[im_order]
+        shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
+        shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
 
         while len(positive_examples) < self._triplet or len(negative_examples) < self._triplet:
             positive_examples = []
