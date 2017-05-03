@@ -23,7 +23,7 @@ def im_list_to_blob(ims):
     for i in xrange(num_images):
         im = ims[i]
         print im.shape
-        blob[i, 0:im.shape[0], 0:im.shape[1], :] = im
+        blob[i, 0:im.shape[0], 0:im.shape[1], :] = im.reshape((max_shape[0], max_shape[1], config.NUM_CHANNELS))
     if config.NUM_CHANNELS == 3:
         channel_swap = (0, 3, 1, 2)
         blob = blob.transpose(channel_swap)
