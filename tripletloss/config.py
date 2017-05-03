@@ -48,7 +48,6 @@ data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].mean(0)
-IM_MEAN = cv2.resize(IM_MEAN, (TARGET_SIZE,TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
 
 NUM_CHANNELS = arr.shape[1]
 
