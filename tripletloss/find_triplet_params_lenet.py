@@ -32,7 +32,7 @@ def getFeatures(im,net,featLayer):
     if config.NUM_CHANNELS == 3:
         orig_im = caffe.io.load_image(im)
     else:
-        orig_im = caffe.io.load_image(im,color=False)
+        orig_im = caffe.io.load_image(im,color=False).squeeze()
     print orig_im.shape
     caffe_input = transformer.preprocess('data',orig_im)
     net.blobs['data'].data[...] = caffe_input
@@ -78,7 +78,7 @@ def get_triplet_stats(stat_file,net_model,net_weights):
         neg_im = random.choice(ims_by_class[neg_example])
         random_triplets.append((pos_pair[0],pos_pair[1],neg_im))
 
-    featLayer = 'ip2'
+    featLayer = 'ip1'
 
     pos_dists = []
     neg_dists = []
