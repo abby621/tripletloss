@@ -9,6 +9,6 @@ display: 20
 max_iter: 400000
 momentum: 0.9
 weight_decay: 0.0005
-snapshot: 5000
+snapshot: 1000
 snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs/mnist/"
 solver_mode: GPU
