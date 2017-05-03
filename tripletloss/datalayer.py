@@ -158,6 +158,7 @@ class DataLayer(caffe.Layer):
                 im = cv2.imread(sample[i],cv2.IMREAD_GRAYSCALE)
             else:
                 im = cv2.imread(sample[i])
+            im = cv2.resize(im, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
             im = prep_im_for_blob(im)
             im_blob.append(im)
         # Create a blob to hold the input images

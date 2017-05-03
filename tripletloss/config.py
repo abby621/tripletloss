@@ -34,22 +34,21 @@ BATCH_SIZE = 30
 # Use flipped images also?
 FLIPPED = False
 
+TARGET_SIZE = 224
+CROP_SZ = 227
+
 blob = caffe_pb2.BlobProto()
 # data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 # blob.ParseFromString(data)
 # arr = np.array(blobproto_to_array(blob))
 # IM_MEAN = arr[0].mean(1).mean(1)
-
-# TARGET_SIZE = 224
-# CROP_SZ = 227
+# IM_MEAN = cv2.resize(IM_MEAN, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
 
 data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].mean(0)
-
-TARGET_SIZE = 28
-CROP_SZ = 24
+IM_MEAN = cv2.resize(IM_MEAN, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
 
 NUM_CHANNELS = arr.shape[1]
 
