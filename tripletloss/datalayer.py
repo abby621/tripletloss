@@ -148,7 +148,7 @@ class DataLayer(caffe.Layer):
         labels_blob = []
         for i in range(len(sample)):
             if config.NUM_CHANNELS == 1:
-                im = cv2.imread(sample[i],cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                im = cv2.imread(sample[i],cv2.IMREAD_GRAYSCALE)
             else:
                 im = cv2.imread(sample[i])
             print 'Before mean subtract'
