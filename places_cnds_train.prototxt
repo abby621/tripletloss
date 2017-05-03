@@ -577,11 +577,11 @@ layer {
  bottom: "fc7"
  top: "fc9"
  param {
-   lr_mult: 1
+   lr_mult: 10
    decay_mult: 0
  }
  param {
-   lr_mult: 2
+   lr_mult: 20
    decay_mult: 0
  }
  inner_product_param {
@@ -596,7 +596,7 @@ layer {
  type:  "Accuracy"
  bottom: "fc9"
  bottom: "labels"
- top: "accuracy_1"
+ top: "accuracy"
  include: { phase: TEST }
 }
 layer {
