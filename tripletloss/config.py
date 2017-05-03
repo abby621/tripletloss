@@ -51,6 +51,8 @@ IM_MEAN = arr[0].mean(1).mean(1)
 TARGET_SIZE = 28
 CROP_SZ = 28
 
+NUM_CHANNELS = IM_MEAN.shape[0]
+
 TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
 
 TEST_NET = '/project/focus/abby/tripletloss/places_cnds_deploy.prototxt'

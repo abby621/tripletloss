@@ -178,7 +178,7 @@ class DataLayer(caffe.Layer):
 
         # data blob: holds a batch of N images, each with 3 channels
         # The height and width (100 x 100) are dummy values
-        top[0].reshape(self._batch_size, 3, 224, 224)
+        top[0].reshape(self._batch_size, config.NUM_CHANNELS, config.TARGET_SIZE, config.TARGET_SIZE)
 
         top[1].reshape(self._batch_size)
 
