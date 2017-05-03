@@ -148,7 +148,11 @@ class DataLayer(caffe.Layer):
         labels_blob = []
         for i in range(len(sample)):
             im = cv2.imread(sample[i])
+            print 'Before mean subtract'
+            print im
             im = prep_im_for_blob(im)
+            print 'After mean subtract'
+            print im
             im_blob.append(im)
         # Create a blob to hold the input images
         blob = im_list_to_blob(im_blob)
