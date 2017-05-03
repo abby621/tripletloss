@@ -178,7 +178,6 @@ class DataLayer(caffe.Layer):
 
         # data blob: holds a batch of N images, each with config.NUM_CHANNELS channels
         top[0].reshape(self._batch_size, config.NUM_CHANNELS, config.TARGET_SIZE, config.TARGET_SIZE)
-
         top[1].reshape(self._batch_size)
 
     def forward(self, bottom, top):
@@ -188,7 +187,8 @@ class DataLayer(caffe.Layer):
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
-            top[top_ind].reshape(*(blob.shape))
+            if blob_name == 'data':
+                top[top_ind].reshape(*(blob.shape)) # may need to reshape depending on number of channels
             # Copy data into net's input blobs
             top[top_ind].data[...] = blob
 
