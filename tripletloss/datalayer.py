@@ -187,6 +187,7 @@ class DataLayer(caffe.Layer):
         blobs = self._get_next_minibatch()
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
+            print blob
             # Reshape net's input blobs
             top[top_ind].reshape(*(blob.shape))
             # Copy data into net's input blobs
