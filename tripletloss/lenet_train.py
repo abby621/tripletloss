@@ -83,7 +83,7 @@ if __name__ == '__main__':
     # output_dir = '/project/focus/abby/tripletloss/models/outputs/places_cnds/'
     # pretrained_model = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
     output_dir = '/project/focus/abby/tripletloss/models/outputs/mnist/'
-    pretrained_model = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel''
+    pretrained_model = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel'
     max_iters = config.MAX_ITERS
     sw = SolverWrapper(solver_prototxt,output_dir,pretrained_model)
 
