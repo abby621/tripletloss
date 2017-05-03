@@ -17,13 +17,14 @@ def im_list_to_blob(ims):
     """
     max_shape = np.array([im.shape for im in ims]).max(axis=0)
     num_images = len(ims)
-    blob = np.zeros((num_images, max_shape[0], max_shape[1], 3),
+    blob = np.zeros((num_images, max_shape[0], max_shape[1], config.NUM_CHANNELS),
                     dtype=np.float32)
     for i in xrange(num_images):
         im = ims[i]
         blob[i, 0:im.shape[0], 0:im.shape[1], :] = im
-    channel_swap = (0, 3, 1, 2)
-    blob = blob.transpose(channel_swap)
+    if config.NUM_CHANNELS == 3:
+        channel_swap = (0, 3, 1, 2)
+        blob = blob.transpose(channel_swap)
     return blob
 
 def prep_im_for_blob(im):
