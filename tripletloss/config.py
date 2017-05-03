@@ -35,7 +35,8 @@ BATCH_SIZE = 30
 FLIPPED = True
 
 blob = caffe_pb2.BlobProto()
-data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
+# data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
+data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].mean(1).mean(1)
