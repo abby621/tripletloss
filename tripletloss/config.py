@@ -51,8 +51,8 @@ IM_MEAN = arr[0].mean(0)
 
 NUM_CHANNELS = arr.shape[1]
 
-TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
+TRIPLET_TRAINING = True # if we're not fine tuning with triplet loss, this should be false
 
-TEST_NET = '/project/focus/abby/tripletloss/places_cnds_deploy.prototxt'
-TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
-TEST_LAYER = 'fc7'
+TEST_NET = '/project/focus/abby/tripletloss/lenet_deploy.prototxt'
+TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel'
+TEST_LAYER = 'ip1'
