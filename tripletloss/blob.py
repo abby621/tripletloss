@@ -19,6 +19,7 @@ def im_list_to_blob(ims):
     num_images = len(ims)
     blob = np.zeros((num_images, max_shape[0], max_shape[1], config.NUM_CHANNELS),
                     dtype=np.float32)
+    print blob.shape
     for i in xrange(num_images):
         im = ims[i]
         blob[i, 0:im.shape[0], 0:im.shape[1], :] = im
