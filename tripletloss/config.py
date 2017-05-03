@@ -34,8 +34,8 @@ BATCH_SIZE = 30
 # Use flipped images also?
 FLIPPED = False
 
-TARGET_SIZE = 224
-CROP_SZ = 227
+TARGET_SIZE = 128
+CROP_SZ = 120
 
 blob = caffe_pb2.BlobProto()
 # data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
