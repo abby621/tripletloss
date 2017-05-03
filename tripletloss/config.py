@@ -51,7 +51,7 @@ IM_MEAN = arr[0].mean(0)
 TARGET_SIZE = 28
 CROP_SZ = 28
 
-NUM_CHANNELS = IM_MEAN.shape[0]
+NUM_CHANNELS = arr.shape[1]
 
 TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
 
