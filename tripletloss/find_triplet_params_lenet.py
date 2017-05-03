@@ -21,7 +21,7 @@ help = """
     weights_file: the file name for the caffemodel weights
     """
 
-def getFeatures(im,net,featLayer,config.IM_MEAN):
+def getFeatures(im,net,featLayer):
     net.blobs['data'].reshape(1,config.NUM_CHANNELS,config.CROP_SZ,config.CROP_SZ)
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
     transformer.set_mean('data', config.IM_MEAN)
