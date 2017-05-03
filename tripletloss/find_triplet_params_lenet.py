@@ -107,6 +107,8 @@ def get_triplet_stats(stat_file,net_model,net_weights):
     neg_var = np.var(neg_dists)
 
     triplet_stats = {'pos_mean':pos_mean,'pos_std':pos_std,'neg_mean':neg_mean,'neg_std':neg_std}
+    print 'Saving triplet stats:'
+    print triplet_stats
 
 #     stat_file = '/project/focus/abby/tripletloss/params/triplet_stats.pickle'
     if os.path.exists(stat_file):
