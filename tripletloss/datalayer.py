@@ -176,8 +176,7 @@ class DataLayer(caffe.Layer):
         if config.TRIPLET_TRAINING == True:
             self.test_net = caffe.Net(config.TEST_NET, config.TEST_WEIGHTS, caffe.TEST)
 
-        # data blob: holds a batch of N images, each with 3 channels
-        # The height and width (100 x 100) are dummy values
+        # data blob: holds a batch of N images, each with config.NUM_CHANNELS channels
         top[0].reshape(self._batch_size, config.NUM_CHANNELS, config.TARGET_SIZE, config.TARGET_SIZE)
 
         top[1].reshape(self._batch_size)
@@ -185,9 +184,9 @@ class DataLayer(caffe.Layer):
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
         blobs = self._get_next_minibatch()
+        print blobs
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
-            print blob
             # Reshape net's input blobs
             top[top_ind].reshape(*(blob.shape))
             # Copy data into net's input blobs
