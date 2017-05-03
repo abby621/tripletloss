@@ -49,7 +49,7 @@ arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].mean(0)
 
 TARGET_SIZE = 28
-CROP_SZ = 28
+CROP_SZ = 24
 
 NUM_CHANNELS = arr.shape[1]
 
