@@ -147,6 +147,7 @@ class DataLayer(caffe.Layer):
         im_blob = []
         labels_blob = []
         for i in range(len(sample)):
+            print sample[i]
             if config.NUM_CHANNELS == 1:
                 im = cv2.imread(sample[i],cv2.IMREAD_GRAYSCALE)
             else:
