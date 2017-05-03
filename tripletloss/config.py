@@ -32,7 +32,7 @@ MAX_ITERS = 400000
 BATCH_SIZE = 30
 
 # Use flipped images also?
-FLIPPED = True
+FLIPPED = False
 
 blob = caffe_pb2.BlobProto()
 # data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
