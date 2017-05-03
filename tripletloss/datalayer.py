@@ -23,13 +23,17 @@ import os, commands
 from scipy.stats import norm
 
 def get_features(im,net):
-    net.blobs['data'].reshape(1,3,config.CROP_SZ,config.CROP_SZ)
+    net.blobs['data'].reshape(1,config.NUM_CHANNELS,config.CROP_SZ,config.CROP_SZ)
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
     transformer.set_mean('data', config.IM_MEAN)
-    transformer.set_transpose('data', (2,0,1))
-    transformer.set_channel_swap('data', (2,1,0))
+    if config.NUM_CHANNELS == 1:
+        transformer.set_transpose('data', (2,0,1))
+        transformer.set_channel_swap('data', (2,1,0))
     transformer.set_raw_scale('data', 255.0)
-    orig_im = caffe.io.load_image(im)
+    if config.NUM_CHANNELS == 3:
+        orig_im = caffe.io.load_image(im)
+    else:
+        orig_im = caffe.io.load_image(im,color=False).squeeze()
     caffe_input = transformer.preprocess('data',orig_im)
     net.blobs['data'].data[...] = caffe_input
     out = net.forward()
@@ -135,6 +139,7 @@ class DataLayer(caffe.Layer):
             sample.append(shuffled_im_paths[n])
             sample_labels.append(shuffled_im_labels[n])
 
+        print sample
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
              'labels': sample_labels}
