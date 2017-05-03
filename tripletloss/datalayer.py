@@ -52,19 +52,9 @@ class DataLayer(caffe.Layer):
         sample = []
         sample_labels = []
 
-        # recompute our triplet distribution function every 10k images
-        if self._index % 10000 == 0 and self._index != 0 and config.TRIPLET_TRAINING:
-            print 'Copying the most recent snapshot to the most_recent path....'
-            # copy the most recent snapshot to the 'most_recent.caffemodel' location
-            status, most_recent = commands.getstatusoutput("ls -dtr1 /project/focus/abby/tripletloss/models/outputs/places_cnds/*.caffemodel | tail -1")
-            cp_cmd = 'cp ' + most_recent + ' /project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
-            os.system(cp_cmd)
-            # run the code to find and save the new triplet distribution parameters
-            os.system("python /project/focus/abby/tripletloss/tripletloss/find_triplet_params.py /project/focus/abby/tripletloss/places_cnds_train.prototxt /project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel")
-
         # load the triplet parameters and generate the distributions
         if config.TRIPLET_TRAINING:
-            stat_file = '/project/focus/abby/tripletloss/params/triplet_stats.pickle'
+            stat_file = '/project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle'
             with open(stat_file,'rb') as f:
                 triplet_stats = pickle.load(f)
             f.close()

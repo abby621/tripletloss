@@ -1,38 +1,4 @@
 name: "LeNet"
-# layer {
-#   name: "mnist"
-#   type: "Data"
-#   top: "data"
-#   top: "label"
-#   include {
-#     phase: TRAIN
-#   }
-#   transform_param {
-#     scale: 0.00390625
-#   }
-#   data_param {
-#     source: "/project/focus/datasets/mnist/mnist_train_lmdb"
-#     batch_size: 32
-#     backend: LMDB
-#   }
-# }
-# layer {
-#   name: "mnist"
-#   type: "Data"
-#   top: "data"
-#   top: "label"
-#   include {
-#     phase: TEST
-#   }
-#   transform_param {
-#     scale: 0.00390625
-#   }
-#   data_param {
-#     source: "/project/focus/datasets/mnist/mnist_test_lmdb"
-#     batch_size: 32
-#     backend: LMDB
-#   }
-# }
 layer {
   name: 'data'
   type: "Python"
@@ -159,20 +125,73 @@ layer {
     }
   }
 }
+# layer {
+#   name: "accuracy"
+#   type: "Accuracy"
+#   bottom: "ip2"
+#   bottom: "label"
+#   top: "accuracy"
+#   include {
+#     phase: TEST
+#   }
+# }
+# layer {
+#   name: "loss"
+#   type: "SoftmaxWithLoss"
+#   bottom: "ip2"
+#   bottom: "label"
+#   top: "loss"
+# }
+#====================tripletloss==================
 layer {
-  name: "accuracy"
-  type: "Accuracy"
-  bottom: "ip2"
-  bottom: "label"
-  top: "accuracy"
-  include {
-    phase: TEST
+ name: "norm2"
+ type: "Python"
+ bottom: "ip2"
+ top: "norm2"
+ python_param {
+   module: "norm2layer"
+   layer: "Norm2Layer"
+ }
+}
+layer {
+ name: "fc9_1"
+ type: "InnerProduct"
+ bottom: "norm2"
+ top: "fc9_1"
+ param {
+    lr_mult: 10
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 512
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip2"
-  bottom: "label"
-  top: "loss"
+  name: "triplet_select"
+  type: "Python"
+  bottom: "fc9_1"
+  bottom: "labels"
+  top: "anchor"
+  top: "positive"
+  top: "negative"
+  python_param {
+    module: "tripletselectlayer"
+    layer: "TripletSelectLayer"
+  }
+}
+layer {
+  name: "tripletloss"
+  type: "Python"
+  bottom: "anchor"
+  bottom: "positive"
+  bottom: "negative"
+  top: "tripletloss"
+  python_param {
+    module: "tripletlosslayer"
+    layer: "TripletLayer"
+  }
+  loss_weight: 1
 }
