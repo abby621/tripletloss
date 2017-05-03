@@ -180,7 +180,7 @@ class DataLayer(caffe.Layer):
             self.test_net = caffe.Net(config.TEST_NET, config.TEST_WEIGHTS, caffe.TEST)
 
         # data blob: holds a batch of N images, each with config.NUM_CHANNELS channels
-        top[0].reshape(self._batch_size, config.TARGET_SIZE, config.TARGET_SIZE,config.NUM_CHANNELS)
+        top[0].reshape(self._batch_size, config.NUM_CHANNELS, config.TARGET_SIZE, config.TARGET_SIZE)
         top[1].reshape(self._batch_size)
 
     def forward(self, bottom, top):
