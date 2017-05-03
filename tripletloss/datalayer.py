@@ -26,7 +26,7 @@ def get_features(im,net):
     net.blobs['data'].reshape(1,config.NUM_CHANNELS,config.CROP_SZ,config.CROP_SZ)
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
     transformer.set_mean('data', config.IM_MEAN)
-    if config.NUM_CHANNELS == 1:
+    if config.NUM_CHANNELS == 3:
         transformer.set_transpose('data', (2,0,1))
         transformer.set_channel_swap('data', (2,1,0))
     transformer.set_raw_scale('data', 255.0)
