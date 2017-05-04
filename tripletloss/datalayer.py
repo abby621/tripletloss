@@ -140,16 +140,17 @@ class DataLayer(caffe.Layer):
             sample_labels.append(shuffled_im_labels[n])
 
         im_blob = self._get_image_blob(sample)
-        print sample[0],sample[self._triplet],sample[self._triplet*2]
-        print sample[1],sample[self._triplet+1],sample[self._triplet*2+1]
-        print sample[2],sample[self._triplet+2],sample[self._triplet*2+2]
-        print sample[3],sample[self._triplet+3],sample[self._triplet*2+3]
-        print sample[4],sample[self._triplet+4],sample[self._triplet*2+4]
-        print sample[5],sample[self._triplet+5],sample[self._triplet*2+5]
-        print sample[6],sample[self._triplet+6],sample[self._triplet*2+6]
-        print sample[7],sample[self._triplet+7],sample[self._triplet*2+7]
-        print sample[8],sample[self._triplet+8],sample[self._triplet*2+8]
-        print sample[9],sample[self._triplet+9],sample[self._triplet*2+9]
+        # see what the triplets actually are
+        # print sample[0],sample[self._triplet],sample[self._triplet*2]
+        # print sample[1],sample[self._triplet+1],sample[self._triplet*2+1]
+        # print sample[2],sample[self._triplet+2],sample[self._triplet*2+2]
+        # print sample[3],sample[self._triplet+3],sample[self._triplet*2+3]
+        # print sample[4],sample[self._triplet+4],sample[self._triplet*2+4]
+        # print sample[5],sample[self._triplet+5],sample[self._triplet*2+5]
+        # print sample[6],sample[self._triplet+6],sample[self._triplet*2+6]
+        # print sample[7],sample[self._triplet+7],sample[self._triplet*2+7]
+        # print sample[8],sample[self._triplet+8],sample[self._triplet*2+8]
+        # print sample[9],sample[self._triplet+9],sample[self._triplet*2+9]
         blobs = {'data': im_blob,
              'labels': sample_labels}
         return blobs
@@ -183,8 +184,8 @@ class DataLayer(caffe.Layer):
         self._index = 0
         self._epoch = 0
 
-        self._pos_thresh = 0.45
-        self._neg_thresh = 0.65
+        self._pos_thresh = 0.1
+        self._neg_thresh = 0.9
 
         # load this net for triplet computation
         if config.TRIPLET_TRAINING == True:
