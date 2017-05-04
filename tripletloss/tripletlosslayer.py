@@ -52,6 +52,7 @@ class TripletLayer(caffe.Layer):
             ap = np.dot(a_p,a_p)
             an = np.dot(a_n,a_n)
             dist = (self.margin + ap - an)
+            print dist, self.margin, ap, an
             _loss = max(dist,0.0)
             if i == 0:
                 print ('loss:'+' diff: ' + str(abs(ap-an)) + ' ap:'+str(ap)+' '+'an:'+str(an))
