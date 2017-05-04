@@ -140,6 +140,16 @@ class DataLayer(caffe.Layer):
             sample_labels.append(shuffled_im_labels[n])
 
         im_blob = self._get_image_blob(sample)
+        print sample_labels[0],sample_labels[self._triplet],sample_labels[self._triplet*2]
+        print sample_labels[1],sample_labels[self._triplet+1],sample_labels[self._triplet*2+1]
+        print sample_labels[2],sample_labels[self._triplet+2],sample_labels[self._triplet*2+2]
+        print sample_labels[3],sample_labels[self._triplet+3],sample_labels[self._triplet*2+3]
+        print sample_labels[4],sample_labels[self._triplet+4],sample_labels[self._triplet*2+4]
+        print sample_labels[5],sample_labels[self._triplet+5],sample_labels[self._triplet*2+5]
+        print sample_labels[6],sample_labels[self._triplet+6],sample_labels[self._triplet*2+6]
+        print sample_labels[7],sample_labels[self._triplet+7],sample_labels[self._triplet*2+7]
+        print sample_labels[8],sample_labels[self._triplet+8],sample_labels[self._triplet*2+8]
+        print sample_labels[9],sample_labels[self._triplet+9],sample_labels[self._triplet*2+9]
         blobs = {'data': im_blob,
              'labels': sample_labels}
         return blobs
