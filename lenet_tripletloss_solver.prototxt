@@ -1,4 +1,4 @@
-net: "/project/focus/abby/tripletloss/lenet_train_test.prototxt"
+net: "/project/focus/abby/tripletloss/lenet_tripletloss_train_test.prototxt"
 test_iter: 1
 test_interval: 100
 base_lr: 0.0001
@@ -10,5 +10,5 @@ max_iter: 400000
 momentum: 0.9
 weight_decay: 0.0005
 snapshot: 1000
-snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs/cifar-10/"
+snapshot_prefix: "/project/focus/abby/tripletloss/models/outputs/cifar-10/tripletloss"
 solver_mode: GPU
