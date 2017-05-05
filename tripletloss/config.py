@@ -14,11 +14,11 @@ import cv2
 # SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
 
 # Training lmdb
-TRAIN_FILE = '/project/focus/datasets/mnist/train.txt'
+TRAIN_FILE = '/project/focus/datasets/cifar-10/train.txt'
 # Test lmdb
-TEST_FILE = '/project/focus/datasets/mnist/test.txt'
+TEST_FILE = '/project/focus/datasets/cifar-10/test.txt'
 # Validation lmdb
-VAL_FILE = '/project/focus/datasets/mnist/test.txt'
+VAL_FILE = '/project/focus/datasets/cifar-10/test.txt'
 # Small sample subset
 SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
 
@@ -34,25 +34,29 @@ BATCH_SIZE = 30
 # Use flipped images also?
 FLIPPED = False
 
-TARGET_SIZE = 28
-CROP_SZ = 28
+TARGET_SIZE = 32
+CROP_SZ = 32
 
 blob = caffe_pb2.BlobProto()
 # data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 # blob.ParseFromString(data)
 # arr = np.array(blobproto_to_array(blob))
 # IM_MEAN = arr[0].mean(1).mean(1)
-# IM_MEAN = cv2.resize(IM_MEAN, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
 
-data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
+# data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
+# blob.ParseFromString(data)
+# arr = np.array(blobproto_to_array(blob))
+# IM_MEAN = arr[0].mean(0)
+
+data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 IM_MEAN = arr[0].mean(0)
 
 NUM_CHANNELS = arr.shape[1]
 
-TRIPLET_TRAINING = True # if we're not fine tuning with triplet loss, this should be false
+TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
 
 TEST_NET = '/project/focus/abby/tripletloss/lenet_deploy.prototxt'
-TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel'
+TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/cifar-10/most_recent.caffemodel'
 TEST_LAYER = 'ip1'
