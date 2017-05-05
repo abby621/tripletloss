@@ -22,9 +22,11 @@ def im_list_to_blob(ims):
     for i in xrange(num_images):
         im = ims[i]
         blob[i, :,0:im.shape[0], 0:im.shape[1]] = im.reshape((config.NUM_CHANNELS,max_shape[0], max_shape[1]))
+    print blob.shape
     if config.NUM_CHANNELS == 3:
         channel_swap = (0, 3, 1, 2)
         blob = blob.transpose(channel_swap)
+        print blob.shape
     return blob
 
 def prep_im_for_blob(im):
