@@ -202,6 +202,7 @@ class DataLayer(caffe.Layer):
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
             if blob_name == 'data':
+                print blob.shape
                 top[top_ind].reshape(*(blob.shape)) # may need to reshape depending on number of channels
             # Copy data into net's input blobs
             top[top_ind].data[...] = blob
