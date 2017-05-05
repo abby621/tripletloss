@@ -42,7 +42,7 @@ layer {
     mean_file: "/project/focus/datasets/cifar-10/mean.binaryproto"
   }
   data_param {
-    source: "/project/focus/datasets/cifar-10/val_lmdb"
+    source: "/project/focus/datasets/cifar-10/test_lmdb"
     batch_size: 50
     backend: LMDB
   }
