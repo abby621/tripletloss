@@ -41,19 +41,20 @@ blob = caffe_pb2.BlobProto()
 # data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 # blob.ParseFromString(data)
 # arr = np.array(blobproto_to_array(blob))
+# NUM_CHANNELS = arr.shape[1]
 # IM_MEAN = arr[0].mean(1).mean(1)
 
 # data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 # blob.ParseFromString(data)
 # arr = np.array(blobproto_to_array(blob))
+# NUM_CHANNELS = arr.shape[1]
 # IM_MEAN = arr[0].mean(0)
 
 data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
-IM_MEAN = arr[0].mean(0)
-
 NUM_CHANNELS = arr.shape[1]
+IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
 
 TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
 
