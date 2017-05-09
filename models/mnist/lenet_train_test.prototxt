@@ -22,7 +22,7 @@ layer {
     phase: TEST
   }
   python_param {
-    module: 'testdatalayer'
+    module: 'datalayer'
     layer: 'DataLayer'
     param_str: '{"phase":"TEST"}'
   }

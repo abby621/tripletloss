@@ -14,6 +14,7 @@ import numpy as np
 from numpy import *
 import yaml
 from hoteldata import hoteldata
+from hoteldata import testhoteldata
 import random
 import cv2
 from blob import prep_im_for_blob, im_list_to_blob
@@ -182,7 +183,7 @@ class DataLayer(caffe.Layer):
             self.data_container =  hoteldata()
         else:
             self.data_container = testhoteldata()
-        
+
         self._index = 0
         self._epoch = 0
 
