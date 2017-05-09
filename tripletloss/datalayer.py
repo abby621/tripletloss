@@ -21,6 +21,7 @@ import config
 import pickle
 import os, commands
 from scipy.stats import norm
+import json
 
 def get_features(im,net):
     net.blobs['data'].reshape(1,config.NUM_CHANNELS,config.CROP_SZ,config.CROP_SZ)
@@ -174,7 +175,12 @@ class DataLayer(caffe.Layer):
             'data': 0,
             'labels': 1}
 
-        self.data_container =  hoteldata()
+        if hasattr(self, 'param_str') and self.param_str:
+            params = json.loads(self.param_str)
+        else:
+            params = {}
+        self.phase = params.get('phase','train')
+        self.data_container =  hoteldata(self.phase)
         self._index = 0
         self._epoch = 0
 

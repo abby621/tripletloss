@@ -4,9 +4,27 @@ layer {
   type: "Python"
   top: 'data'
   top: 'label'
+  include {
+    phase: TRAIN
+  }
   python_param {
     module: 'datalayer'
     layer: 'DataLayer'
+    param_str: "{\"phase\": 'train'}"
+  }
+}
+layer {
+  name: 'data'
+  type: "Python"
+  top: 'data'
+  top: 'label'
+  include {
+    phase: TEST
+  }
+  python_param {
+    module: 'testdatalayer'
+    layer: 'DataLayer'
+    param_str: "{\"phase\": 'test'}"
   }
 }
 # layer {
