@@ -52,12 +52,14 @@ class DataLayer(caffe.Layer):
     def _get_next_minibatch(self):
         num_images = self._batch_size
 
-        # Sample to use for each image in this batch
-        sample = []
-        sample_labels = []
+        im_order = range(num_ims)
+        random.shuffle(im_order)
 
-        # load the triplet parameters and generate the distributions
+        shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
+        shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
+        
         if config.TRIPLET_TRAINING:
+            # load the triplet parameters and generate the distributions
             stat_file = '/project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle'
             with open(stat_file,'rb') as f:
                 triplet_stats = pickle.load(f)
@@ -65,95 +67,85 @@ class DataLayer(caffe.Layer):
             pos_norm = norm(loc=triplet_stats['pos_mean'],scale=triplet_stats['pos_std'])
             neg_norm = norm(los=triplet_stats['neg_mean'],scale=triplet_stats['neg_std'])
 
-        num_ims = len(self.data_container._train_im_paths)
-        positive_examples = []
-        negative_examples = []
+            # Sample to use for each image in this batch
+            sample = []
+            sample_labels = []
 
-        im_order = range(num_ims)
-        random.shuffle(im_order)
-
-        shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
-        shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
-
-        while len(positive_examples) < self._triplet or len(negative_examples) < self._triplet:
+            num_ims = len(self.data_container._train_im_paths)
             positive_examples = []
             negative_examples = []
 
-            anchor_im_path = shuffled_im_paths[self._index]
-            anchor_im_label = shuffled_im_labels[self._index]
-            if config.TRIPLET_TRAINING:
-                anchor_im_feat = get_features(anchor_im_path,self.test_net)
+            while len(positive_examples) < self._triplet or len(negative_examples) < self._triplet:
+                positive_examples = []
+                negative_examples = []
 
-            # include a candidate as a positive example if:
-            # it is from the same hotel
-            # it is not the exact same image
-            # roughly, this image is in the self._pos_thresh closest positive images
-            pos_ctr = 0
-            while len(positive_examples) < self._triplet and pos_ctr < num_ims:
-                if shuffled_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
-                    if config.TRIPLET_TRAINING:
-                        pos_feat = get_features(shuffled_im_paths[pos_ctr],self.test_net)
-                        pos_dist = feat_dist(anchor_im_feat,pos_feat)
-                        pos_score = pos_norm.cdf(pos_dist)
-                        if pos_score < self._pos_thresh:
+                anchor_im_path = shuffled_im_paths[self._index]
+                anchor_im_label = shuffled_im_labels[self._index]
+                if config.TRIPLET_TRAINING:
+                    anchor_im_feat = get_features(anchor_im_path,self.test_net)
+
+                # include a candidate as a positive example if:
+                # it is from the same hotel
+                # it is not the exact same image
+                # roughly, this image is in the self._pos_thresh closest positive images
+                pos_ctr = 0
+                while len(positive_examples) < self._triplet and pos_ctr < num_ims:
+                    if shuffled_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
+                        if config.TRIPLET_TRAINING:
+                            pos_feat = get_features(shuffled_im_paths[pos_ctr],self.test_net)
+                            pos_dist = feat_dist(anchor_im_feat,pos_feat)
+                            pos_score = pos_norm.cdf(pos_dist)
+                            if pos_score < self._pos_thresh:
+                                positive_examples.append(pos_ctr)
+                        else:
                             positive_examples.append(pos_ctr)
-                    else:
-                        positive_examples.append(pos_ctr)
-                pos_ctr += 1
+                    pos_ctr += 1
 
-            # include a candidate as a negative example if:
-            # it is from a different hotel
-            # roughly, this image is in the self._neg_thresh farthest images
-            neg_ctr = 0
-            while len(negative_examples) < self._triplet and neg_ctr < num_ims:
-                if shuffled_im_labels[neg_ctr]!=anchor_im_label and neg_ctr != self._index:
-                    if config.TRIPLET_TRAINING:
-                        neg_feat = get_features(shuffled_im_paths[neg_ctr],self.test_net)
-                        neg_dist = feat_dist(anchor_im_feat,neg_feat)
-                        neg_score = neg_norm.cdf(neg_dist)
-                        if neg_score > self._neg_thresh:
+                # include a candidate as a negative example if:
+                # it is from a different hotel
+                # roughly, this image is in the self._neg_thresh farthest images
+                neg_ctr = 0
+                while len(negative_examples) < self._triplet and neg_ctr < num_ims:
+                    if shuffled_im_labels[neg_ctr]!=anchor_im_label and neg_ctr != self._index:
+                        if config.TRIPLET_TRAINING:
+                            neg_feat = get_features(shuffled_im_paths[neg_ctr],self.test_net)
+                            neg_dist = feat_dist(anchor_im_feat,neg_feat)
+                            neg_score = neg_norm.cdf(neg_dist)
+                            if neg_score > self._neg_thresh:
+                                negative_examples.append(neg_ctr)
+                        else:
                             negative_examples.append(neg_ctr)
-                    else:
-                        negative_examples.append(neg_ctr)
-                neg_ctr += 1
+                    neg_ctr += 1
 
-            self._index = self._index + 1
-            if self._index >= len(shuffled_im_paths):
-                self._index = 0
-                self._epoch += 1
-                # Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
-                if self._pos_thresh + 0.05 <= 1: self._pos_thresh += 0.05
-                if self._neg_thresh - 0.05 >= 0: self._neg_thresh -= 0.05
+                self._index = self._index + 1
+                if self._index >= len(shuffled_im_paths):
+                    self._index = 0
+                    self._epoch += 1
+                    # Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
+                    if self._pos_thresh + 0.05 <= 1: self._pos_thresh += 0.05
+                    if self._neg_thresh - 0.05 >= 0: self._neg_thresh -= 0.05
 
-        while len(sample) < self._triplet:
-            sample.append(anchor_im_path)
-            sample_labels.append(anchor_im_label)
+            while len(sample) < self._triplet:
+                sample.append(anchor_im_path)
+                sample_labels.append(anchor_im_label)
 
-        # Sample positive examples
-        for p in positive_examples:
-            sample.append(shuffled_im_paths[p])
-            sample_labels.append(shuffled_im_labels[p])
+            # Sample positive examples
+            for p in positive_examples:
+                sample.append(shuffled_im_paths[p])
+                sample_labels.append(shuffled_im_labels[p])
 
-        # Sample negative examples
-        for n in negative_examples:
-            sample.append(shuffled_im_paths[n])
-            sample_labels.append(shuffled_im_labels[n])
+            # Sample negative examples
+            for n in negative_examples:
+                sample.append(shuffled_im_paths[n])
+                sample_labels.append(shuffled_im_labels[n])
+        else:
+            rand_order = random.sample(im_order,num_ims)
+            sample = shuffled_im_paths[rand_order]
+            sample_labels = shuffled_im_labels[rand_order]
 
         im_blob = self._get_image_blob(sample)
-        # see what the triplets actually are
-        # print sample[0],sample[self._triplet],sample[self._triplet*2]
-        # print sample[1],sample[self._triplet+1],sample[self._triplet*2+1]
-        # print sample[2],sample[self._triplet+2],sample[self._triplet*2+2]
-        # print sample[3],sample[self._triplet+3],sample[self._triplet*2+3]
-        # print sample[4],sample[self._triplet+4],sample[self._triplet*2+4]
-        # print sample[5],sample[self._triplet+5],sample[self._triplet*2+5]
-        # print sample[6],sample[self._triplet+6],sample[self._triplet*2+6]
-        # print sample[7],sample[self._triplet+7],sample[self._triplet*2+7]
-        # print sample[8],sample[self._triplet+8],sample[self._triplet*2+8]
-        # print sample[9],sample[self._triplet+9],sample[self._triplet*2+9]
-        print sample_labels
         blobs = {'data': im_blob,
-             'labels': sample_labels}
+                 'labels': sample_labels}
         return blobs
 
     def _get_image_blob(self,sample):
