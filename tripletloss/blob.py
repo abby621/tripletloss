@@ -24,11 +24,6 @@ def im_list_to_blob(ims):
     for i in xrange(num_images):
         im = ims[i]
 
-        # TODO: save example ims to review
-        im_path = os.path.join('/project/focus/abby/tripletloss/example_ims/',''.join(random.choice('abcdefghijklmnopqrstuvwxyz') for _ in range(10)))
-        pil_im = Image.fromarray(im)
-        pil_im.save(im_path)
-        
         blob[i, :, 0:im.shape[0], 0:im.shape[1]] = im.reshape((config.NUM_CHANNELS,max_shape[0], max_shape[1]))
     # if config.NUM_CHANNELS == 3:
     #     channel_swap = (0, 3, 1, 2)
