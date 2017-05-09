@@ -3,7 +3,8 @@ import config as cfg
 import numpy as np
 import csv
 
-class hoteldata():
+class hoteldata(phase):
+    print phase
     global _train_im_paths
     global _train_im_labels
 
