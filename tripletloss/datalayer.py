@@ -145,7 +145,6 @@ class DataLayer(caffe.Layer):
                 sample_labels.append(shuffled_im_labels[r])
 
         im_blob = self._get_image_blob(sample)
-        print im_blob
         blobs = {'data': im_blob,
                  'labels': sample_labels}
         return blobs
