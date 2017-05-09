@@ -69,7 +69,10 @@ elif WHICH_DATASET == 'mnist':
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 NUM_CHANNELS = arr.shape[1]
-IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
+if NUM_CHANNELS == 1:
+    IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE))
+else:
+    IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
 
 # TODO: Make this vary with the dataset like the params above
 TEST_NET = '/project/focus/abby/tripletloss/lenet_deploy.prototxt'
