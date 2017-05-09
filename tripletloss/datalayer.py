@@ -151,6 +151,7 @@ class DataLayer(caffe.Layer):
         # print sample[7],sample[self._triplet+7],sample[self._triplet*2+7]
         # print sample[8],sample[self._triplet+8],sample[self._triplet*2+8]
         # print sample[9],sample[self._triplet+9],sample[self._triplet*2+9]
+        print sample_labels
         blobs = {'data': im_blob,
              'labels': sample_labels}
         return blobs
