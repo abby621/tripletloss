@@ -175,7 +175,11 @@ class DataLayer(caffe.Layer):
             'data': 0,
             'labels': 1}
 
-        self.data_container =  hoteldata(self.phase)
+        param = json.loads(self.param_str)
+        phase = param['phase']
+        print phase
+
+        self.data_container =  hoteldata(phase)
         self._index = 0
         self._epoch = 0
 

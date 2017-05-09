@@ -10,7 +10,7 @@ layer {
   python_param {
     module: 'datalayer'
     layer: 'DataLayer'
-    param_str: "{\"phase\": 'train'}"
+    param_str: '{"phase":"TRAIN"}'
   }
 }
 layer {
@@ -24,7 +24,7 @@ layer {
   python_param {
     module: 'testdatalayer'
     layer: 'DataLayer'
-    param_str: "{\"phase\": 'test'}"
+    param_str: '{"phase":"TEST"}'
   }
 }
 # layer {
