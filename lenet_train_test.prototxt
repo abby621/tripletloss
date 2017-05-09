@@ -180,7 +180,7 @@ layer {
   bottom: "label"
   top: "loss"
 }
-#====================tripletloss==================
+# # ====================tripletloss==================
 # layer {
 #  name: "norm2"
 #  type: "Python"
