@@ -142,7 +142,7 @@ class DataLayer(caffe.Layer):
             rand_order = random.sample(im_order,num_ims)
             for r in rand_order:
                 sample.append(shuffled_im_paths[r])
-                sample.append(shuffled_im_labels[r])
+                sample_labels.append(shuffled_im_labels[r])
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
