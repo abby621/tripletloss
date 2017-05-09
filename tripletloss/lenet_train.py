@@ -78,19 +78,8 @@ class SolverWrapper(object):
 
 
 if __name__ == '__main__':
-    """Train network."""
-    if config.TRIPLET_TRAINING:
-        solver_prototxt = '/project/focus/abby/tripletloss/lenet_tripletloss_solver.prototxt'
-    else:
-        solver_prototxt = '/project/focus/abby/tripletloss/lenet_solver.prototxt'
-    # output_dir = '/project/focus/abby/tripletloss/models/outputs/places_cnds/'
-    # pretrained_model = '/project/focus/abby/tripletloss/models/outputs/places_cnds/most_recent.caffemodel'
-    output_dir = '/project/focus/abby/tripletloss/models/outputs/cifar-10/'
-    # pretrained_model = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel'
-    pretrained_model = None
-    max_iters = config.MAX_ITERS
-    sw = SolverWrapper(solver_prototxt,output_dir,pretrained_model)
+    sw = SolverWrapper(config.SOLVER_PROTOTXT,config.OUTPUT_DIR,config.PRETRAINED_MODEL)
 
     print 'Solving...'
-    sw.train_model(max_iters)
+    sw.train_model(config.MAX_ITERS)
     print 'done solving'

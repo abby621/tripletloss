@@ -4,23 +4,7 @@ from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 import cv2
 
-# # Training lmdb
-# TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
-# # Test lmdb
-# TEST_FILE = '/project/focus/datasets/tc_tripletloss/test.txt'
-# # Validation lmdb
-# VAL_FILE = '/project/focus/datasets/tc_tripletloss/val.txt'
-# # Small sample subset
-# SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
-
-# Training lmdb
-TRAIN_FILE = '/project/focus/datasets/cifar-10/train.txt'
-# Test lmdb
-TEST_FILE = '/project/focus/datasets/cifar-10/test.txt'
-# Validation lmdb
-VAL_FILE = '/project/focus/datasets/cifar-10/test.txt'
-# Small sample subset
-SAMPLE_FILE = '/project/focus/datasets/tc_tripletloss/sample.txt'
+WHICH_DATASET = 'mnist'
 
 # Snapshot iteration
 SNAPSHOT_ITERS = 10000
@@ -34,30 +18,60 @@ BATCH_SIZE = 30
 # Use flipped images also?
 FLIPPED = False
 
-TARGET_SIZE = 32
-CROP_SZ = 32
+# Do triplet loss training?
+TRIPLET_TRAINING = False # if we're doing the initial feature embedding, this should be false
 
 blob = caffe_pb2.BlobProto()
-# data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
-# blob.ParseFromString(data)
-# arr = np.array(blobproto_to_array(blob))
-# NUM_CHANNELS = arr.shape[1]
-# IM_MEAN = arr[0].mean(1).mean(1)
 
-# data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
-# blob.ParseFromString(data)
-# arr = np.array(blobproto_to_array(blob))
-# NUM_CHANNELS = arr.shape[1]
-# IM_MEAN = arr[0].mean(0)
+if WHICH_DATASET == 'tc':
+    TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
+    TEST_FILE = '/project/focus/datasets/tc_tripletloss/test.txt'
+    VAL_FILE = '/project/focus/datasets/tc_tripletloss/val.txt'
+    OUTPUT_DIR = '/project/focus/abby/tripletloss/models/outputs/traffickcam/'
+    if TRIPLET_TRAINING:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/traffickcam/lenet_tripletloss_solver.prototxt'
+        PRETRAINED_MODEL = '/project/focus/abby/tripletloss/models/outputs/traffickcam/most_recent.caffemodel'
+    else:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/traffickcam/lenet_solver.prototxt'
+        PRETRAINED_MODEL = None
+    TARGET_SIZE = 256
+    CROP_SZ = 224
+    data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
+elif WHICH_DATASET == 'cifar':
+    TRAIN_FILE = '/project/focus/datasets/cifar-10/train.txt'
+    TEST_FILE = '/project/focus/datasets/cifar-10/test.txt'
+    VAL_FILE = '/project/focus/datasets/cifar-10/test.txt'
+    OUTPUT_DIR = '/project/focus/abby/tripletloss/models/outputs/cifar/'
+    if TRIPLET_TRAINING:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/cifar/lenet_tripletloss_solver.prototxt'
+        PRETRAINED_MODEL = '/project/focus/abby/tripletloss/models/outputs/cifar/most_recent.caffemodel'
+    else:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/cifar/lenet_solver.prototxt'
+        PRETRAINED_MODEL = None
+    TARGET_SIZE = 32
+    CROP_SZ = 32
+    data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
+elif WHICH_DATASET == 'mnist':
+    TRAIN_FILE = '/project/focus/datasets/mnist/train.txt'
+    TEST_FILE = '/project/focus/datasets/mnist/test.txt'
+    VAL_FILE = '/project/focus/datasets/mnist/test.txt'
+    OUTPUT_DIR = '/project/focus/abby/tripletloss/models/outputs/mnist/'
+    if TRIPLET_TRAINING:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/mnist/lenet_tripletloss_solver.prototxt'
+        PRETRAINED_MODEL = '/project/focus/abby/tripletloss/models/outputs/mnist/most_recent.caffemodel'
+    else:
+        SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/mnist/lenet_solver.prototxt'
+        PRETRAINED_MODEL = None
+    TARGET_SIZE = 28
+    CROP_SZ = 28
+    data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 
-data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 NUM_CHANNELS = arr.shape[1]
 IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
 
-TRIPLET_TRAINING = False # if we're not fine tuning with triplet loss, this should be false
-
+# TODO: Make this vary with the dataset like the params above
 TEST_NET = '/project/focus/abby/tripletloss/lenet_deploy.prototxt'
 TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/cifar-10/most_recent.caffemodel'
 TEST_LAYER = 'ip1'
