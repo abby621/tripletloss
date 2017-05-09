@@ -50,14 +50,14 @@ class DataLayer(caffe.Layer):
     """Sample data layer used for training."""
 
     def _get_next_minibatch(self):
-        num_images = self._batch_size
+        num_ims = self._batch_size
 
         im_order = range(num_ims)
         random.shuffle(im_order)
 
         shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
         shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
-        
+
         if config.TRIPLET_TRAINING:
             # load the triplet parameters and generate the distributions
             stat_file = '/project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle'
