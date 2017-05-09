@@ -175,13 +175,6 @@ class DataLayer(caffe.Layer):
             'data': 0,
             'labels': 1}
 
-        if hasattr(self, 'param_str') and self.param_str:
-            params = json.loads(self.param_str)
-        else:
-            params = {}
-
-        self.phase = params.get('phase','train')
-
         self.data_container =  hoteldata(self.phase)
         self._index = 0
         self._epoch = 0
