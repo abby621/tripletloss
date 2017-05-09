@@ -143,9 +143,9 @@ class DataLayer(caffe.Layer):
             for r in rand_order:
                 sample.append(shuffled_im_paths[r])
                 sample_labels.append(shuffled_im_labels[r])
-            print sample_labels
 
         im_blob = self._get_image_blob(sample)
+        print im_blob
         blobs = {'data': im_blob,
                  'labels': sample_labels}
         return blobs
