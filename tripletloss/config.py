@@ -4,7 +4,7 @@ from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 import cv2
 
-WHICH_DATASET = 'mnist'
+WHICH_DATASET = 'cifar'
 
 # Snapshot iteration
 SNAPSHOT_ITERS = 10000
