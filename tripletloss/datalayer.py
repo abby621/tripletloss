@@ -58,6 +58,10 @@ class DataLayer(caffe.Layer):
         shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
         shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
 
+        # Sample to use for each image in this batch
+        sample = []
+        sample_labels = []
+
         if config.TRIPLET_TRAINING:
             # load the triplet parameters and generate the distributions
             stat_file = '/project/focus/abby/tripletloss/params/triplet_stats_lenet.pickle'
@@ -66,10 +70,6 @@ class DataLayer(caffe.Layer):
             f.close()
             pos_norm = norm(loc=triplet_stats['pos_mean'],scale=triplet_stats['pos_std'])
             neg_norm = norm(los=triplet_stats['neg_mean'],scale=triplet_stats['neg_std'])
-
-            # Sample to use for each image in this batch
-            sample = []
-            sample_labels = []
 
             num_ims = len(self.data_container._train_im_paths)
             positive_examples = []
@@ -140,8 +140,9 @@ class DataLayer(caffe.Layer):
                 sample_labels.append(shuffled_im_labels[n])
         else:
             rand_order = random.sample(im_order,num_ims)
-            sample = shuffled_im_paths[rand_order]
-            sample_labels = shuffled_im_labels[rand_order]
+            for r in rand_order:
+                sample.append(shuffled_im_paths[r])
+                sample.append(shuffled_im_labels[r])
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
