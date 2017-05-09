@@ -3,18 +3,18 @@ import config as cfg
 import numpy as np
 import csv
 
-class hoteldata(phase):
+class hoteldata():
     global _train_im_paths
     global _train_im_labels
 
-    def __init__(self,phase):
-        if phase == 'train':
+    def __init__(self):
+        if self.phase == 'train':
             with open(cfg.TRAIN_FILE,'rU') as tf:
                 readerT = csv.reader(tf, delimiter=' ')
                 trainIms = list(readerT)
             self._train_im_paths = [i[0] for i in trainIms]
             self._train_im_labels = [i[1] for i in trainIms]
-        elif phase == 'test':
+        elif self.phase == 'test':
             with open(cfg.TEST_FILE,'rU') as tf:
                 readerT = csv.reader(tf, delimiter=' ')
                 trainIms = list(readerT)
