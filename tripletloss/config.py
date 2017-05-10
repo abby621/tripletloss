@@ -65,7 +65,7 @@ elif WHICH_DATASET == 'mnist':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 28
     CROP_SZ = 28
-    TRAIN_BATCH_SIZE = 50
+    TRAIN_BATCH_SIZE = 256
     TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 
