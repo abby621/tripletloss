@@ -1,4 +1,4 @@
-net: "/project/focus/abby/tripletloss/models/mnist/lenet_train_test.prototxt"
+net: "/project/focus/abby/tripletloss/models/mnist/lenet_lmdb_train_test.prototxt"
 test_iter: 1
 test_interval: 500
 base_lr: 0.0001
