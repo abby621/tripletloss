@@ -33,7 +33,8 @@ if WHICH_DATASET == 'tc':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 256
     CROP_SZ = 224
-    BATCH_SIZE = 30
+    TRAIN_BATCH_SIZE = 30
+    TEST_BATCH-SIZE = 30
     data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 elif WHICH_DATASET == 'cifar':
     TRAIN_FILE = '/project/focus/datasets/cifar-10/train.txt'
@@ -48,7 +49,8 @@ elif WHICH_DATASET == 'cifar':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 32
     CROP_SZ = 32
-    BATCH_SIZE = 256
+    TRAIN_BATCH_SIZE = 256
+    TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
 elif WHICH_DATASET == 'mnist':
     TRAIN_FILE = '/project/focus/datasets/mnist/train.txt'
@@ -63,7 +65,8 @@ elif WHICH_DATASET == 'mnist':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 28
     CROP_SZ = 28
-    BATCH_SIZE = 256
+    TRAIN_BATCH_SIZE = 256
+    TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 
 blob.ParseFromString(data)

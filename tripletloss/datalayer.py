@@ -147,7 +147,7 @@ class DataLayer(caffe.Layer):
 
         if self.phase == 'TEST':
             print sample
-        
+
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
                  'labels': sample_labels}
@@ -171,7 +171,18 @@ class DataLayer(caffe.Layer):
         """Setup the RoIDataLayer."""
         # parse the layer parameter string, which must be valid YAML
         # layer_params = yaml.load(self.param_str_)
-        self._batch_size = config.BATCH_SIZE
+        param = json.loads(self.param_str)
+        self.phase = param['phase']
+
+        if self.phase == 'TRAIN':
+            self.data_container =  hoteldata()
+        else:
+            self.data_container = testhoteldata()
+
+        if self.phase == 'TRAIN':
+            self._batch_size = config.TRAIN_BATCH_SIZE
+        else:
+            self._batch_size = config.TEST_BATCH_SIZE
         self._triplet = self._batch_size/3
 
         if config.TRIPLET_TRAINING:
@@ -181,13 +192,7 @@ class DataLayer(caffe.Layer):
             'data': 0,
             'labels': 1}
 
-        param = json.loads(self.param_str)
-        self.phase = param['phase']
 
-        if self.phase == 'TRAIN':
-            self.data_container =  hoteldata()
-        else:
-            self.data_container = testhoteldata()
 
         self._index = 0
         self._epoch = 0
