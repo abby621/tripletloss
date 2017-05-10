@@ -145,7 +145,7 @@ class DataLayer(caffe.Layer):
             for r in rand_order:
                 sample.append(shuffled_im_paths[r])
                 sample_labels.append(shuffled_im_labels[r])
-        
+
         print sample
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
@@ -179,6 +179,7 @@ class DataLayer(caffe.Layer):
 
         param = json.loads(self.param_str)
         phase = param['phase']
+        print phase
 
         if phase == 'TRAIN':
             self.data_container =  hoteldata()
