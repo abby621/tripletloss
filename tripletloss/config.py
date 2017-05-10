@@ -49,7 +49,7 @@ elif WHICH_DATASET == 'cifar':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 32
     CROP_SZ = 32
-    TRAIN_BATCH_SIZE = 256
+    TRAIN_BATCH_SIZE = 50
     TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/cifar-10/mean.binaryproto', 'rb' ).read()
 elif WHICH_DATASET == 'mnist':
@@ -65,7 +65,7 @@ elif WHICH_DATASET == 'mnist':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 28
     CROP_SZ = 28
-    TRAIN_BATCH_SIZE = 256
+    TRAIN_BATCH_SIZE = 50
     TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 
