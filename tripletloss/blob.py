@@ -24,7 +24,6 @@ def im_list_to_blob(ims):
                     dtype=np.float32)
     for i in xrange(num_images):
         im = ims[i]
-        print np.mean(im)
         do_save = random.random() > .95
         if do_save:
             save_path = '/project/focus/abby/tripletloss/example_ims/test/' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10)) + '.jpg'
