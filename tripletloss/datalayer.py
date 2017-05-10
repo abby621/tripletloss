@@ -55,7 +55,7 @@ class DataLayer(caffe.Layer):
         num_ims = self._batch_size
 
         im_order = range(num_ims)
-        random.shuffle(im_order)
+        # random.shuffle(im_order)
 
         shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
         shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
