@@ -24,9 +24,11 @@ def im_list_to_blob(ims):
                     dtype=np.float32)
     for i in xrange(num_images):
         im = ims[i]
-        save_path = '/project/focus/abby/tripletloss/example_ims/test/' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10)) + '.jpg'
-        pil_im = Image.fromarray(im).convert('RGB')
-        pil_im.save(save_path)
+        do_save = random.random() > .95
+        if do_save:
+            save_path = '/project/focus/abby/tripletloss/example_ims/test/' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10)) + '.jpg'
+            pil_im = Image.fromarray(im).convert('RGB')
+            pil_im.save(save_path)
         blob[i, :, 0:im.shape[0], 0:im.shape[1]] = im.reshape((config.NUM_CHANNELS,max_shape[0], max_shape[1]))
     # if config.NUM_CHANNELS == 3:
     #     channel_swap = (0, 3, 1, 2)
@@ -35,6 +37,6 @@ def im_list_to_blob(ims):
 
 def prep_im_for_blob(im):
     im = im.astype(np.float32, copy=False)
-    im -= config.IM_MEAN
+    im2 = im - config.IM_MEAN
     # im = cv2.resize(im, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
     return im
