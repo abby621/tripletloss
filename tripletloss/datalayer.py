@@ -158,7 +158,9 @@ class DataLayer(caffe.Layer):
                 im = cv2.imread(sample[i],cv2.IMREAD_GRAYSCALE)
             else:
                 im = cv2.imread(sample[i])
+            print 'Before: ',np.mean(im)
             im = prep_im_for_blob(im)
+            print 'After: ',np.mean(im)
             im_blob.append(im)
         # Create a blob to hold the input images
         blob = im_list_to_blob(im_blob)
