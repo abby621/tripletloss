@@ -145,6 +145,9 @@ class DataLayer(caffe.Layer):
                 sample.append(shuffled_im_paths[ix])
                 sample_labels.append(shuffled_im_labels[ix])
 
+        if self.phase == 'TEST':
+            print sample
+        
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
                  'labels': sample_labels}
