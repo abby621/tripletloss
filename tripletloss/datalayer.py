@@ -176,13 +176,11 @@ class DataLayer(caffe.Layer):
 
         if self.phase == 'TRAIN':
             self.data_container =  hoteldata()
-        else:
-            self.data_container = testhoteldata()
-
-        if self.phase == 'TRAIN':
             self._batch_size = config.TRAIN_BATCH_SIZE
         else:
+            self.data_container = testhoteldata()
             self._batch_size = config.TEST_BATCH_SIZE
+        
         self._triplet = self._batch_size/3
 
         if config.TRIPLET_TRAINING:
