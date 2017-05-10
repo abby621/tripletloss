@@ -54,12 +54,6 @@ class DataLayer(caffe.Layer):
     def _get_next_minibatch(self):
         num_ims = self._batch_size
 
-        im_order = range(num_ims)
-        random.shuffle(im_order)
-
-        shuffled_im_paths = [self.data_container._train_im_paths[i] for i in im_order]
-        shuffled_im_labels = [self.data_container._train_im_labels[i] for i in im_order]
-
         # Sample to use for each image in this batch
         sample = []
         sample_labels = []
@@ -81,8 +75,8 @@ class DataLayer(caffe.Layer):
                 positive_examples = []
                 negative_examples = []
 
-                anchor_im_path = shuffled_im_paths[self._index]
-                anchor_im_label = shuffled_im_labels[self._index]
+                anchor_im_path = self.data_container._train_im_paths[self._index]
+                anchor_im_label = self.data_container._train_im_labels[self._index]
                 if config.TRIPLET_TRAINING:
                     anchor_im_feat = get_features(anchor_im_path,self.test_net)
 
@@ -92,9 +86,9 @@ class DataLayer(caffe.Layer):
                 # roughly, this image is in the self._pos_thresh closest positive images
                 pos_ctr = 0
                 while len(positive_examples) < self._triplet and pos_ctr < num_ims:
-                    if shuffled_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
+                    if self.data_container._train_im_labels[pos_ctr]==anchor_im_label and pos_ctr != self._index:
                         if config.TRIPLET_TRAINING:
-                            pos_feat = get_features(shuffled_im_paths[pos_ctr],self.test_net)
+                            pos_feat = get_features(self.data_container._train_im_paths[pos_ctr],self.test_net)
                             pos_dist = feat_dist(anchor_im_feat,pos_feat)
                             pos_score = pos_norm.cdf(pos_dist)
                             if pos_score < self._pos_thresh:
@@ -108,9 +102,9 @@ class DataLayer(caffe.Layer):
                 # roughly, this image is in the self._neg_thresh farthest images
                 neg_ctr = 0
                 while len(negative_examples) < self._triplet and neg_ctr < num_ims:
-                    if shuffled_im_labels[neg_ctr]!=anchor_im_label and neg_ctr != self._index:
+                    if self.data_container._train_im_labels[neg_ctr]!=anchor_im_label and neg_ctr != self._index:
                         if config.TRIPLET_TRAINING:
-                            neg_feat = get_features(shuffled_im_paths[neg_ctr],self.test_net)
+                            neg_feat = get_features(self.data_container._train_im_paths[neg_ctr],self.test_net)
                             neg_dist = feat_dist(anchor_im_feat,neg_feat)
                             neg_score = neg_norm.cdf(neg_dist)
                             if neg_score > self._neg_thresh:
@@ -120,7 +114,7 @@ class DataLayer(caffe.Layer):
                     neg_ctr += 1
 
                 self._index = self._index + 1
-                if self._index >= len(shuffled_im_paths):
+                if self._index >= len(self.data_container._train_im_labels):
                     self._index = 0
                     self._epoch += 1
                     # Change self._pos_thresh and self._neg_thresh to make the task more challenging w/ each epoch
@@ -133,21 +127,17 @@ class DataLayer(caffe.Layer):
 
             # Sample positive examples
             for p in positive_examples:
-                sample.append(shuffled_im_paths[p])
-                sample_labels.append(shuffled_im_labels[p])
+                sample.append(self.data_container._train_im_paths[p])
+                sample_labels.append(self.data_container._train_im_labels[p])
 
             # Sample negative examples
             for n in negative_examples:
-                sample.append(shuffled_im_paths[n])
-                sample_labels.append(shuffled_im_labels[n])
+                sample.append(self.data_container._train_im_paths[n])
+                sample_labels.append(self.data_container._train_im_labels[n])
         else:
-            rand_order = random.sample(im_order,num_ims)
-            for r in rand_order:
-                sample.append(shuffled_im_paths[r])
-                sample_labels.append(shuffled_im_labels[r])
-
-        if self.phase == 'TEST':
-            print self.phase, sample
+            for ix in range(num_ims):
+                sample.append(self.data_container._train_im_paths[ix])
+                sample_labels.append(self.data_container._train_im_labels[ix])
 
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
