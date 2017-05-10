@@ -24,8 +24,6 @@ import os, commands
 from scipy.stats import norm
 import json
 
-global _phase
-
 def get_features(im,net):
     net.blobs['data'].reshape(1,config.NUM_CHANNELS,config.CROP_SZ,config.CROP_SZ)
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
@@ -148,7 +146,7 @@ class DataLayer(caffe.Layer):
                 sample.append(shuffled_im_paths[r])
                 sample_labels.append(shuffled_im_labels[r])
 
-        print _phase, sample
+        print self.phase, sample
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
                  'labels': sample_labels}
@@ -180,9 +178,9 @@ class DataLayer(caffe.Layer):
             'labels': 1}
 
         param = json.loads(self.param_str)
-        _phase = param['phase']
+        self.phase = param['phase']
 
-        if _phase == 'TRAIN':
+        if self.phase == 'TRAIN':
             self.data_container =  hoteldata()
         else:
             self.data_container = testhoteldata()
