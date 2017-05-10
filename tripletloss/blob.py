@@ -8,7 +8,7 @@
 
 import numpy as np
 import cv2
-import config as config
+import config
 import random
 from PIL import Image
 import string
