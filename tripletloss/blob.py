@@ -9,8 +9,7 @@
 import numpy as np
 import cv2
 import config as config
-import os, random
-from PIL import Image
+import random
 
 def im_list_to_blob(ims):
     """Convert a list of images into a network input.
@@ -33,5 +32,8 @@ def im_list_to_blob(ims):
 def prep_im_for_blob(im):
     im = im.astype(np.float32, copy=False)
     im -= config.IM_MEAN
+    do_flip = random.random() >= .5
+    if do_flip:
+        im = cv2.flip(im,0)
     # im = cv2.resize(im, (config.TARGET_SIZE,config.TARGET_SIZE), interpolation=cv2.INTER_LINEAR)
     return im
