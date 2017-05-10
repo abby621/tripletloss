@@ -148,7 +148,7 @@ class DataLayer(caffe.Layer):
 
         if self.phase == 'TEST':
             print self.phase, sample
-        
+
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
                  'labels': sample_labels}
@@ -174,7 +174,10 @@ class DataLayer(caffe.Layer):
         # layer_params = yaml.load(self.param_str_)
         self._batch_size = config.BATCH_SIZE
         self._triplet = self._batch_size/3
-        assert self._batch_size % 3 == 0
+
+        if config.TRIPLET_TRAINING:
+            # batch size must be in multiples of 3 for triplet training
+            assert self._batch_size % 3 == 0
         self._name_to_top_map = {
             'data': 0,
             'labels': 1}
