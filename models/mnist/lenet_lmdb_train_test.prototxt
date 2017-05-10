@@ -36,7 +36,7 @@ layer {
     phase: TRAIN
   }
   transform_param {
-    mirror: true
+    mirror: false
     crop_size: 28
     mean_file: "/project/focus/datasets/mnist/mnist_mean.binaryproto"
   }
