@@ -145,7 +145,7 @@ class DataLayer(caffe.Layer):
                 sample.append(shuffled_im_paths[ix])
                 sample_labels.append(shuffled_im_labels[ix])
 
-        if self.phase == 'TEST':
+        if self.phase == 'TRAIN':
             print sample
 
         im_blob = self._get_image_blob(sample)
@@ -180,7 +180,7 @@ class DataLayer(caffe.Layer):
         else:
             self.data_container = testhoteldata()
             self._batch_size = config.TEST_BATCH_SIZE
-        
+
         self._triplet = self._batch_size/3
 
         if config.TRIPLET_TRAINING:
