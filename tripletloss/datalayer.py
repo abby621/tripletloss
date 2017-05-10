@@ -145,9 +145,6 @@ class DataLayer(caffe.Layer):
                 sample.append(shuffled_im_paths[ix])
                 sample_labels.append(shuffled_im_labels[ix])
 
-        if self.phase == 'TRAIN':
-            print sample
-
         im_blob = self._get_image_blob(sample)
         blobs = {'data': im_blob,
                  'labels': sample_labels}
@@ -190,8 +187,6 @@ class DataLayer(caffe.Layer):
             'data': 0,
             'labels': 1}
 
-
-
         self._index = 0
         self._epoch = 0
 
@@ -212,8 +207,8 @@ class DataLayer(caffe.Layer):
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
             # Reshape net's input blobs
-            # if blob_name == 'data':
-            #     top[top_ind].reshape(*(blob.shape)) # may need to reshape depending on number of channels
+            if blob_name == 'data':
+                top[top_ind].reshape(*(blob.shape)) # may need to reshape depending on number of channels
             # Copy data into net's input blobs
             top[top_ind].data[...] = blob
 
