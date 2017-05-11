@@ -37,7 +37,7 @@ class TripletSelectLayer(caffe.Layer):
         # randomly select our anchors from the data in this batch
         random_anchors = random.sample(range(config.TRAIN_BATCH_SIZE),self.triplet)
 
-        print dir(self)
+        print self.blobs
 
         # anchor_labels = [self.blobs['label'].data[a] for a in random_anchors]
         # anchor_data = np.asarray([self.blobs['data'].data[a] for a in random_anchors])
