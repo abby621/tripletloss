@@ -18,6 +18,7 @@ import math
 import config
 import json
 import lmdb
+import random
 
 # TODO: Grab triplets on the fly here.
 
@@ -33,8 +34,21 @@ class TripletSelectLayer(caffe.Layer):
             self.triplet_data = config.TEST_DATA
             self.triplet = config.TEST_BATCH_SIZE/3
 
-        print dir(self)
-        
+        # randomly select our anchors from the data in this batch
+        random_anchors = random.sample(range(config.TRAIN_BATCH_SIZE),self.triplet)
+
+        anchor_labels = [self.blobs['label'].data[a] for a in random_anchors]
+        anchor_data = np.asarray([self.blobs['data'].data[a] for a in random_anchors])
+
+        # TODO: update to select + and - examples based on distance
+        possible_positives = [np.where(self.triplet_data._im_labels==a)[0] for a in anchor_labels]
+        positive_ims = [random.choice(ind) for ind in possible_positives]
+
+        possible_negatives = [np.where(self.triplet_data._im_labels!=a)[0] for a in anchor_labels]
+        negative_ims = [random.choice(ind) for ind in possible_negatives]
+
+        print top[0], top[1], top[2]
+
         """Setup the TripletSelectLayer."""
 
         top[0].reshape(self.triplet,shape(bottom[0].data)[1])
