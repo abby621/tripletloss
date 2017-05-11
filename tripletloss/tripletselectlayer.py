@@ -52,29 +52,27 @@ class TripletSelectLayer(caffe.Layer):
         random_anchors = random.sample(range(len(self.triplet_data._im_labels)),self.triplet)
 
         anchor_im_paths = [self.triplet_data._im_paths[a] for a in random_anchors]
-        anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
-        anchor_im_data = im_paths_to_blob(anchor_im_paths)
+        self.anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
+        self.anchor_im_data = im_paths_to_blob(anchor_im_paths)
 
         ## TODO: update to select + and - examples based on distance
         possible_positives = [np.where(np.asarray(self.triplet_data._im_labels)==a)[0] for a in anchor_labels]
         positive_im_inds = [random.choice(ind) for ind in possible_positives]
         positive_im_paths = [self.triplet_data._im_paths[a] for a in positive_im_inds]
-        positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
-        positive_im_data = im_paths_to_blob(positive_im_paths)
+        self.positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
+        self.positive_im_data = im_paths_to_blob(positive_im_paths)
 
         possible_negatives = [np.where(np.asarray(self.triplet_data._im_labels)!=a)[0] for a in anchor_labels]
         negative_im_inds = [random.choice(ind) for ind in possible_negatives]
         negative_im_paths = [self.triplet_data._im_paths[a] for a in negative_im_inds]
-        negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
-        negative_im_data = im_paths_to_blob(negative_im_paths)
-
-        print anchor_labels, positive_labels, negative_labels
+        self.negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
+        self.negative_im_data = im_paths_to_blob(negative_im_paths)
 
         """Setup the TripletSelectLayer."""
 
-        top[0].reshape(self.triplet,shape(bottom[0].data)[1])
-        top[1].reshape(self.triplet,shape(bottom[0].data)[1])
-        top[2].reshape(self.triplet,shape(bottom[0].data)[1])
+        top[0].reshape(self.triplet,np.shape(bottom[0].data)[1])
+        top[1].reshape(self.triplet,np.shape(bottom[0].data)[1])
+        top[2].reshape(self.triplet,np.shape(bottom[0].data)[1])
 
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
@@ -108,6 +106,9 @@ class TripletSelectLayer(caffe.Layer):
             if aps[i][1] >= ans[i][1]:
                self.no_residual_list.append(i)
             self.tripletlist.append([i,aps[i][0],ans[i][0]])
+
+        print np.array(top_anchor).shape
+        print self.anchor_im_data.shape
 
         top[0].data[...] = np.array(top_anchor).astype(float32)
         top[1].data[...] = np.array(top_positive).astype(float32)
