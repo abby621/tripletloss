@@ -38,8 +38,8 @@ def im_paths_to_blob(paths):
 
 class TripletSelectLayer(caffe.Layer):
     def setup(self, bottom, top):
-        print current_net
-        
+        print config.CURRENT_NET
+
         param = json.loads(self.param_str)
         self.phase = param['phase']
 

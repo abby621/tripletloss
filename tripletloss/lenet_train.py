@@ -16,8 +16,6 @@ import sys
 import config
 import _init_paths
 
-global current_net
-
 class SolverWrapper(object):
     """A simple wrapper around Caffe's solver.
     """
@@ -35,7 +33,7 @@ class SolverWrapper(object):
                    'weights from {:s}').format(pretrained_model)
             self.solver.net.copy_from(pretrained_model)
 
-        current_net = self.solver.net
+        config.CURRENT_NET = self.solver.net
 
         self.solver_param = caffe_pb2.SolverParameter()
         with open(solver_prototxt, 'rt') as f:

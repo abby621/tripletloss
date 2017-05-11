@@ -81,3 +81,5 @@ if NUM_CHANNELS == 1:
     IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE))
 else:
     IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
+
+global CURRENT_NET
