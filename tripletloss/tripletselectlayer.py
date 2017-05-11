@@ -39,15 +39,15 @@ class TripletSelectLayer(caffe.Layer):
 
         print dir(self)
 
-        anchor_labels = [self.blobs['label'].data[a] for a in random_anchors]
-        anchor_data = np.asarray([self.blobs['data'].data[a] for a in random_anchors])
-
-        # TODO: update to select + and - examples based on distance
-        possible_positives = [np.where(self.triplet_data._im_labels==a)[0] for a in anchor_labels]
-        positive_ims = [random.choice(ind) for ind in possible_positives]
-
-        possible_negatives = [np.where(self.triplet_data._im_labels!=a)[0] for a in anchor_labels]
-        negative_ims = [random.choice(ind) for ind in possible_negatives]
+        # anchor_labels = [self.blobs['label'].data[a] for a in random_anchors]
+        # anchor_data = np.asarray([self.blobs['data'].data[a] for a in random_anchors])
+        #
+        # # TODO: update to select + and - examples based on distance
+        # possible_positives = [np.where(self.triplet_data._im_labels==a)[0] for a in anchor_labels]
+        # positive_ims = [random.choice(ind) for ind in possible_positives]
+        #
+        # possible_negatives = [np.where(self.triplet_data._im_labels!=a)[0] for a in anchor_labels]
+        # negative_ims = [random.choice(ind) for ind in possible_negatives]
 
         print top[0], top[1], top[2]
 
