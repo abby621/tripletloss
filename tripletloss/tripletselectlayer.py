@@ -20,7 +20,6 @@ import lmdb
 import random
 from blob import prep_im_for_blob, im_list_to_blob
 import cv2
-from lenet_train import current_net
 
 # TODO: Grab triplets on the fly here.
 def im_paths_to_blob(paths):
