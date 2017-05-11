@@ -17,9 +17,20 @@ from sklearn import preprocessing
 import math
 import config
 
-class TripletSelectLayer(caffe.Layer):
+# TODO: Grab triplets on the fly here.
 
+class TripletSelectLayer(caffe.Layer):
     def setup(self, bottom, top):
+        param = json.loads(self.param_str)
+        self.phase = param['phase']
+
+        if self.phase == 'TRAIN':
+            self.triplet_data = config.TRAINING_DATA
+        else:
+            self.triplet_data = config.TEST_DATA
+
+        print self.triplet_data
+
         """Setup the TripletSelectLayer."""
         self.triplet = config.BATCH_SIZE/3
         top[0].reshape(self.triplet,shape(bottom[0].data)[1])

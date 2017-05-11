@@ -3,6 +3,7 @@ import numpy as np
 from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 import cv2
+from hoteldata import trainhoteldata, testhoteldata
 
 WHICH_DATASET = 'mnist'
 
@@ -17,8 +18,6 @@ FLIPPED = False
 
 # Do triplet loss training?
 TRIPLET_TRAINING = False # if we're doing the initial feature embedding, this should be false
-
-blob = caffe_pb2.BlobProto()
 
 if WHICH_DATASET == 'tc':
     TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
@@ -69,6 +68,12 @@ elif WHICH_DATASET == 'mnist':
     TEST_BATCH_SIZE = 50
     data = open('/project/focus/datasets/mnist/mnist_mean.binaryproto','rb').read()
 
+# grab the data, organized how we'll need it for selecting triplets (the lmdb will handle the data at the data layer)
+TRAINING_DATA = trainhoteldata()
+TEST_DATA = testhoteldata()
+
+# Grab image mean
+blob = caffe_pb2.BlobProto()
 blob.ParseFromString(data)
 arr = np.array(blobproto_to_array(blob))
 NUM_CHANNELS = arr.shape[1]
@@ -76,8 +81,3 @@ if NUM_CHANNELS == 1:
     IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE))
 else:
     IM_MEAN = arr.reshape((TARGET_SIZE,TARGET_SIZE,NUM_CHANNELS))
-
-# TODO: Make this vary with the dataset like the params above
-TEST_NET = '/project/focus/abby/tripletloss/lenet_deploy.prototxt'
-TEST_WEIGHTS = '/project/focus/abby/tripletloss/models/outputs/cifar-10/most_recent.caffemodel'
-TEST_LAYER = 'ip1'
