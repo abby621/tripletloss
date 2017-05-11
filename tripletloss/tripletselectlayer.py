@@ -49,7 +49,7 @@ class TripletSelectLayer(caffe.Layer):
             self.triplet = config.TEST_BATCH_SIZE/3
 
         # randomly select our anchors from the data in this batch
-        random_anchors = random.sample(len(self.triplet_data._im_labels),self.triplet)
+        random_anchors = random.sample(range(len(self.triplet_data._im_labels)),self.triplet)
 
         anchor_im_paths = [self.triplet_data._im_paths[a] for a in random_anchors]
         anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
