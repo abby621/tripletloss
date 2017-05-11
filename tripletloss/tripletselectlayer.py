@@ -56,13 +56,13 @@ class TripletSelectLayer(caffe.Layer):
         self.anchor_im_data = im_paths_to_blob(anchor_im_paths)
 
         ## TODO: update to select + and - examples based on distance
-        possible_positives = [np.where(np.asarray(self.triplet_data._im_labels)==a)[0] for a in anchor_labels]
+        possible_positives = [np.where(np.asarray(self.triplet_data._im_labels)==a)[0] for a in self.anchor_labels]
         positive_im_inds = [random.choice(ind) for ind in possible_positives]
         positive_im_paths = [self.triplet_data._im_paths[a] for a in positive_im_inds]
         self.positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
         self.positive_im_data = im_paths_to_blob(positive_im_paths)
 
-        possible_negatives = [np.where(np.asarray(self.triplet_data._im_labels)!=a)[0] for a in anchor_labels]
+        possible_negatives = [np.where(np.asarray(self.triplet_data._im_labels)!=a)[0] for a in self.anchor_labels]
         negative_im_inds = [random.choice(ind) for ind in possible_negatives]
         negative_im_paths = [self.triplet_data._im_paths[a] for a in negative_im_inds]
         self.negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
