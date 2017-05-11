@@ -17,7 +17,7 @@ MAX_ITERS = 400000
 FLIPPED = False
 
 # Do triplet loss training?
-TRIPLET_TRAINING = False # if we're doing the initial feature embedding, this should be false
+TRIPLET_TRAINING = True # if we're doing the initial feature embedding, this should be false
 
 if WHICH_DATASET == 'tc':
     TRAIN_FILE = '/project/focus/datasets/tc_tripletloss/train.txt'
