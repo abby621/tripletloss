@@ -16,6 +16,7 @@ from caffe._caffe import RawBlobVec
 from sklearn import preprocessing
 import math
 import config
+import json
 
 # TODO: Grab triplets on the fly here.
 
