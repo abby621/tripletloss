@@ -9,7 +9,6 @@
 """
 import caffe
 import numpy as np
-from numpy import *
 import yaml
 from multiprocessing import Process, Queue
 from caffe._caffe import RawBlobVec
@@ -20,6 +19,7 @@ import json
 import lmdb
 import random
 from blob import prep_im_for_blob, im_list_to_blob
+import cv2
 
 # TODO: Grab triplets on the fly here.
 def im_paths_to_blob(paths):
