@@ -38,10 +38,6 @@ def im_paths_to_blob(paths):
 class TripletSelectLayer(caffe.Layer):
 
     def setup(self, bottom, top):
-        print dir(self)
-        print dir(bottom)
-        print dir(top)
-
         param = json.loads(self.param_str)
         self.phase = param['phase']
 
