@@ -19,10 +19,24 @@ import config
 import json
 import lmdb
 import random
+from blob import prep_im_for_blob, im_list_to_blob
 
 # TODO: Grab triplets on the fly here.
+def im_paths_to_blob(paths):
+    im_blob = []
+    for im_path in paths:
+        if config.NUM_CHANNELS == 1:
+            im = cv2.imread(im_path,cv2.IMREAD_GRAYSCALE)
+        else:
+            im = cv2.imread(im_path)
+        im = prep_im_for_blob(im)
+        anchor_im_blob.append(im)
+    # Create a blob to hold the input images
+    im_data = im_list_to_blob(im_blob)
+    return im_data
 
 class TripletSelectLayer(caffe.Layer):
+
     def setup(self, bottom, top):
         param = json.loads(self.param_str)
         self.phase = param['phase']
@@ -35,21 +49,26 @@ class TripletSelectLayer(caffe.Layer):
             self.triplet = config.TEST_BATCH_SIZE/3
 
         # randomly select our anchors from the data in this batch
-        random_anchors = random.sample(range(config.TRAIN_BATCH_SIZE),self.triplet)
+        random_anchors = random.sample(len(self.triplet_data._im_labels),self.triplet)
 
-        print self.blobs
+        anchor_im_paths = [self.triplet_data._im_paths[a] for a in random_anchors]
+        anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
+        anchor_im_data = im_paths_to_blob(anchor_im_paths)
 
-        # anchor_labels = [self.blobs['label'].data[a] for a in random_anchors]
-        # anchor_data = np.asarray([self.blobs['data'].data[a] for a in random_anchors])
-        #
-        # # TODO: update to select + and - examples based on distance
-        # possible_positives = [np.where(self.triplet_data._im_labels==a)[0] for a in anchor_labels]
-        # positive_ims = [random.choice(ind) for ind in possible_positives]
-        #
-        # possible_negatives = [np.where(self.triplet_data._im_labels!=a)[0] for a in anchor_labels]
-        # negative_ims = [random.choice(ind) for ind in possible_negatives]
+        ## TODO: update to select + and - examples based on distance
+        possible_positives = [np.where(self.triplet_data._im_labels==a)[0] for a in anchor_labels]
+        positive_im_inds = [random.choice(ind) for ind in possible_positives]
+        positive_im_paths = [self.triplet_data._im_paths[a] for a in positive_im_inds]
+        positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
+        positive_im_data = im_paths_to_blob(positive_im_paths)
 
-        print top[0], top[1], top[2]
+        possible_negatives = [np.where(self.triplet_data._im_labels!=a)[0] for a in anchor_labels]
+        negative_im_inds = [random.choice(ind) for ind in possible_negatives]
+        negative_im_paths = [self.triplet_data._im_paths[a] for a in negative_im_inds]
+        negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
+        negative_im_data = im_paths_to_blob(negative_im_paths)
+
+        print anchor_labels, positive_labels, negative_labels
 
         """Setup the TripletSelectLayer."""
 
