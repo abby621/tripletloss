@@ -108,10 +108,7 @@ class TripletSelectLayer(caffe.Layer):
             if aps[i][1] >= ans[i][1]:
                self.no_residual_list.append(i)
             self.tripletlist.append([i,aps[i][0],ans[i][0]])
-
-        print np.array(top_anchor).shape
-        print self.anchor_im_data.shape
-
+        
         top[0].data[...] = np.array(top_anchor).astype(float32)
         top[1].data[...] = np.array(top_positive).astype(float32)
         top[2].data[...] = np.array(top_negative).astype(float32)
