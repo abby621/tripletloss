@@ -30,7 +30,7 @@ def im_paths_to_blob(paths):
         else:
             im = cv2.imread(im_path)
         im = prep_im_for_blob(im)
-        anchor_im_blob.append(im)
+        im_blob.append(im)
     # Create a blob to hold the input images
     im_data = im_list_to_blob(im_blob)
     return im_data
