@@ -27,13 +27,15 @@ class TripletSelectLayer(caffe.Layer):
 
         if self.phase == 'TRAIN':
             self.triplet_data = config.TRAINING_DATA
+            self.triplet = config.TRAIN_BATCH_SIZE/3
         else:
             self.triplet_data = config.TEST_DATA
+            self.triplet = config.TEST_BATCH_SIZE/3
 
         print self.triplet_data
 
         """Setup the TripletSelectLayer."""
-        self.triplet = config.BATCH_SIZE/3
+
         top[0].reshape(self.triplet,shape(bottom[0].data)[1])
         top[1].reshape(self.triplet,shape(bottom[0].data)[1])
         top[2].reshape(self.triplet,shape(bottom[0].data)[1])
