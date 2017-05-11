@@ -38,6 +38,10 @@ def im_paths_to_blob(paths):
 class TripletSelectLayer(caffe.Layer):
 
     def setup(self, bottom, top):
+        print dir(self)
+        print dir(bottom)
+        print dir(top)
+        
         param = json.loads(self.param_str)
         self.phase = param['phase']
 
@@ -52,21 +56,23 @@ class TripletSelectLayer(caffe.Layer):
         random_anchors = random.sample(range(len(self.triplet_data._im_labels)),self.triplet)
 
         anchor_im_paths = [self.triplet_data._im_paths[a] for a in random_anchors]
-        self.anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
-        self.anchor_im_data = im_paths_to_blob(anchor_im_paths)
+        anchor_labels = [self.triplet_data._im_labels[a] for a in random_anchors]
+        anchor_im_data = im_paths_to_blob(anchor_im_paths)
 
         ## TODO: update to select + and - examples based on distance
         possible_positives = [np.where(np.asarray(self.triplet_data._im_labels)==a)[0] for a in self.anchor_labels]
         positive_im_inds = [random.choice(ind) for ind in possible_positives]
         positive_im_paths = [self.triplet_data._im_paths[a] for a in positive_im_inds]
-        self.positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
-        self.positive_im_data = im_paths_to_blob(positive_im_paths)
+        positive_labels = [self.triplet_data._im_labels[a] for a in positive_im_inds]
+        positive_im_data = im_paths_to_blob(positive_im_paths)
 
         possible_negatives = [np.where(np.asarray(self.triplet_data._im_labels)!=a)[0] for a in self.anchor_labels]
         negative_im_inds = [random.choice(ind) for ind in possible_negatives]
         negative_im_paths = [self.triplet_data._im_paths[a] for a in negative_im_inds]
-        self.negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
-        self.negative_im_data = im_paths_to_blob(negative_im_paths)
+        negative_labels = [self.triplet_data._im_labels[a] for a in negative_im_inds]
+        negative_im_data = im_paths_to_blob(negative_im_paths)
+
+        # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
 
         """Setup the TripletSelectLayer."""
 
