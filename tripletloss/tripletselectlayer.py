@@ -39,7 +39,8 @@ class TripletSelectLayer(caffe.Layer):
         top[1].reshape(self.triplet,shape(bottom[0].data)[1])
         top[2].reshape(self.triplet,shape(bottom[0].data)[1])
 
-        print top[0], top[1], top[2]
+        print bottom[0].data
+        print top[0].data, top[1].data, top[2].data
 
     def forward(self, bottom, top):
         """Get blobs and copy them into this layer's top blob vector."""
