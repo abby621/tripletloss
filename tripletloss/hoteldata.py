@@ -12,7 +12,7 @@ class trainhoteldata():
             readerT = csv.reader(tf, delimiter=' ')
             trainIms = list(readerT)
         self._im_paths = [i[0] for i in trainIms]
-        self._im_labels = [i[1] for i in trainIms]
+        self._im_labels = [float(i[1]) for i in trainIms]
 
         if config.FLIPPED:
             flipped_train_ims = [i.split('.')[0]+'_flip.jpg' for i in self._im_paths]
@@ -28,7 +28,7 @@ class testhoteldata():
             readerT = csv.reader(tf, delimiter=' ')
             trainIms = list(readerT)
         self._im_paths = [i[0] for i in trainIms]
-        self._im_labels = [i[1] for i in trainIms]
+        self._im_labels = [float(i[1]) for i in trainIms]
 
         if config.FLIPPED:
             flipped_test_ims = [i.split('.')[0]+'_flip.jpg' for i in self._im_paths]
