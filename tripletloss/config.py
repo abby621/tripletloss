@@ -72,6 +72,8 @@ elif WHICH_DATASET == 'mnist':
 TRAINING_DATA = trainhoteldata()
 TEST_DATA = testhoteldata()
 
+print TRAINING_DATA
+
 # Grab image mean
 blob = caffe_pb2.BlobProto()
 blob.ParseFromString(data)
