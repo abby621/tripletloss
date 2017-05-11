@@ -32,7 +32,7 @@ class TripletSelectLayer(caffe.Layer):
             self.triplet_data = config.TEST_DATA
             self.triplet = config.TEST_BATCH_SIZE/3
 
-        print self.triplet_data
+        print self.triplet_data._im_paths
 
         """Setup the TripletSelectLayer."""
 
