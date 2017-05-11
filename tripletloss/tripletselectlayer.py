@@ -20,6 +20,7 @@ import lmdb
 import random
 from blob import prep_im_for_blob, im_list_to_blob
 import cv2
+from lenet_train import current_net
 
 # TODO: Grab triplets on the fly here.
 def im_paths_to_blob(paths):
@@ -36,8 +37,9 @@ def im_paths_to_blob(paths):
     return im_data
 
 class TripletSelectLayer(caffe.Layer):
-
     def setup(self, bottom, top):
+        print current_net
+        
         param = json.loads(self.param_str)
         self.phase = param['phase']
 
@@ -69,6 +71,7 @@ class TripletSelectLayer(caffe.Layer):
         negative_im_data = im_paths_to_blob(negative_im_paths)
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
+
 
         """Setup the TripletSelectLayer."""
 
