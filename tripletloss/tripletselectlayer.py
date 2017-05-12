@@ -62,43 +62,49 @@ class TripletSelectLayer(caffe.Layer):
         negative_im_data = im_paths_to_blob(negative_im_paths)
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
-        config.CURRENT_NET
+        net_input = np.concatenate((anchor_im_data,positive_im_data,negative_im_data))
+        config.CURRENT_NET.blobs['data'].data[...] = net_input
+        feat_data = config.CURRENT_NET.forward(start='data',end='fc9_1')
+        
+        top[0].data[...] = np.array(feat_data['fc9_1'][:self.triplet,:]).astype(np.float32)
+        top[1].data[...] = np.array(feat_data['fc9_1'][self.triplet:self.triplet*2,:]).astype(np.float32)
+        top[2].data[...] = np.array(feat_data['fc9_1'][self.triplet*2:self.triplet*3,:]).astype(np.float32)
 
-        """Get blobs and copy them into this layer's top blob vector."""
-        top_anchor = []
-        top_positive = []
-        top_negative = []
-        labels = []
-        self.tripletlist = []
-        self.no_residual_list=[]
-        aps = {}
-        ans = {}
-
-        anchor_feature = bottom[0].data[0]
-        for i in range(self.triplet):
-            positive_feature = bottom[0].data[i+self.triplet]
-            a_p = anchor_feature - positive_feature
-            ap = np.dot(a_p,a_p)
-            aps[i+self.triplet] = ap
-        aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
-        for i in range(self.triplet):
-            negative_feature = bottom[0].data[i+self.triplet*2]
-            a_n = anchor_feature - negative_feature
-            an = np.dot(a_n,a_n)
-            ans[i+self.triplet*2] = an
-        ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
-
-        for i in range(self.triplet):
-            top_anchor.append(bottom[0].data[i])
-            top_positive.append(bottom[0].data[aps[i][0]])
-            top_negative.append(bottom[0].data[ans[i][0]])
-            if aps[i][1] >= ans[i][1]:
-               self.no_residual_list.append(i)
-            self.tripletlist.append([i,aps[i][0],ans[i][0]])
-
-        top[0].data[...] = np.array(top_anchor).astype(np.float32)
-        top[1].data[...] = np.array(top_positive).astype(np.float32)
-        top[2].data[...] = np.array(top_negative).astype(np.float32)
+        #"""Get blobs and copy them into this layer's top blob vector."""
+        # top_anchor = []
+        # top_positive = []
+        # top_negative = []
+        # labels = []
+        # self.tripletlist = []
+        # self.no_residual_list=[]
+        # aps = {}
+        # ans = {}
+        #
+        # anchor_feature = bottom[0].data[0]
+        # for i in range(self.triplet):
+        #     positive_feature = bottom[0].data[i+self.triplet]
+        #     a_p = anchor_feature - positive_feature
+        #     ap = np.dot(a_p,a_p)
+        #     aps[i+self.triplet] = ap
+        # aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
+        # for i in range(self.triplet):
+        #     negative_feature = bottom[0].data[i+self.triplet*2]
+        #     a_n = anchor_feature - negative_feature
+        #     an = np.dot(a_n,a_n)
+        #     ans[i+self.triplet*2] = an
+        # ans = sorted(ans.items(), key = lambda d: d[1], reverse = True)
+        #
+        # for i in range(self.triplet):
+        #     top_anchor.append(bottom[0].data[i])
+        #     top_positive.append(bottom[0].data[aps[i][0]])
+        #     top_negative.append(bottom[0].data[ans[i][0]])
+        #     if aps[i][1] >= ans[i][1]:
+        #        self.no_residual_list.append(i)
+        #     self.tripletlist.append([i,aps[i][0],ans[i][0]])
+        #
+        # top[0].data[...] = np.array(top_anchor).astype(np.float32)
+        # top[1].data[...] = np.array(top_positive).astype(np.float32)
+        # top[2].data[...] = np.array(top_negative).astype(np.float32)
 
     def backward(self, top, propagate_down, bottom):
         for i in range(len(self.tripletlist)):
@@ -107,9 +113,9 @@ class TripletSelectLayer(caffe.Layer):
                 bottom[0].diff[self.tripletlist[i][1]] = top[1].diff[i]
                 bottom[0].diff[self.tripletlist[i][2]] = top[2].diff[i]
             else:
-                bottom[0].diff[self.tripletlist[i][0]] = np.zeros(shape(top[0].diff[i]))
-                bottom[0].diff[self.tripletlist[i][1]] = np.zeros(shape(top[1].diff[i]))
-                bottom[0].diff[self.tripletlist[i][2]] = np.zeros(shape(top[2].diff[i]))
+                bottom[0].diff[self.tripletlist[i][0]] = np.zeros(np.shape(top[0].diff[i]))
+                bottom[0].diff[self.tripletlist[i][1]] = np.zeros(np.shape(top[1].diff[i]))
+                bottom[0].diff[self.tripletlist[i][2]] = np.zeros(np.shape(top[2].diff[i]))
 
         #print 'backward-no_re:',bottom[0].diff[0][0]
         #print 'tripletlist:',self.no_residual_list
