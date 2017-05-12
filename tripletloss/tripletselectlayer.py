@@ -37,10 +37,6 @@ def im_paths_to_blob(paths):
 
 class TripletSelectLayer(caffe.Layer):
     def setup(self, bottom, top):
-
-        # TODO: need to figure out how to set the CURRENT_NET variable in lenet_train when it gets loaded
-        print config.CURRENT_NET
-
         param = json.loads(self.param_str)
         self.phase = param['phase']
 
@@ -72,7 +68,6 @@ class TripletSelectLayer(caffe.Layer):
         negative_im_data = im_paths_to_blob(negative_im_paths)
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
-        print config.CURRENT_NET
 
         """Setup the TripletSelectLayer."""
 
@@ -81,6 +76,8 @@ class TripletSelectLayer(caffe.Layer):
         top[2].reshape(self.triplet,np.shape(bottom[0].data)[1])
 
     def forward(self, bottom, top):
+        print config.CURRENT_NET
+        
         """Get blobs and copy them into this layer's top blob vector."""
         top_anchor = []
         top_positive = []
