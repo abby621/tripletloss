@@ -33,7 +33,9 @@ class SolverWrapper(object):
                    'weights from {:s}').format(pretrained_model)
             self.solver.net.copy_from(pretrained_model)
 
+        print 'About to set current net'
         config.CURRENT_NET = self.solver.net
+        print 'Set current net'
 
         self.solver_param = caffe_pb2.SolverParameter()
         with open(solver_prototxt, 'rt') as f:

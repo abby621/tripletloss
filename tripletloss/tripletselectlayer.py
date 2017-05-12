@@ -37,6 +37,8 @@ def im_paths_to_blob(paths):
 
 class TripletSelectLayer(caffe.Layer):
     def setup(self, bottom, top):
+
+        # TODO: need to figure out how to set the CURRENT_NET variable in lenet_train when it gets loaded
         print config.CURRENT_NET
 
         param = json.loads(self.param_str)
