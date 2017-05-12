@@ -63,9 +63,10 @@ class TripletSelectLayer(caffe.Layer):
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
         net_input = np.concatenate((anchor_im_data,positive_im_data,negative_im_data))
+        config.CURRENT_NET.blobs['data'].reshape((net_input.shape))
         config.CURRENT_NET.blobs['data'].data[...] = net_input
         feat_data = config.CURRENT_NET.forward(start='data',end='fc9_1')
-        
+
         top[0].data[...] = np.array(feat_data['fc9_1'][:self.triplet,:]).astype(np.float32)
         top[1].data[...] = np.array(feat_data['fc9_1'][self.triplet:self.triplet*2,:]).astype(np.float32)
         top[2].data[...] = np.array(feat_data['fc9_1'][self.triplet*2:self.triplet*3,:]).astype(np.float32)
