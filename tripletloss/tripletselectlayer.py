@@ -46,7 +46,15 @@ class TripletSelectLayer(caffe.Layer):
         else:
             self.triplet_data = config.TEST_DATA
             self.triplet = config.TEST_BATCH_SIZE/3
+        print 'triplet: ', self.triplet
 
+        """Setup the TripletSelectLayer."""
+
+        top[0].reshape(self.triplet,np.shape(bottom[0].data)[1])
+        top[1].reshape(self.triplet,np.shape(bottom[0].data)[1])
+        top[2].reshape(self.triplet,np.shape(bottom[0].data)[1])
+
+    def forward(self, bottom, top):
         # randomly select our anchors from the data in this batch
         random_anchors = random.sample(range(len(self.triplet_data._im_labels)),self.triplet)
 
@@ -68,16 +76,8 @@ class TripletSelectLayer(caffe.Layer):
         negative_im_data = im_paths_to_blob(negative_im_paths)
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
+        config.CURRENT_NET
 
-        """Setup the TripletSelectLayer."""
-
-        top[0].reshape(self.triplet,np.shape(bottom[0].data)[1])
-        top[1].reshape(self.triplet,np.shape(bottom[0].data)[1])
-        top[2].reshape(self.triplet,np.shape(bottom[0].data)[1])
-
-    def forward(self, bottom, top):
-        print config.CURRENT_NET
-        
         """Get blobs and copy them into this layer's top blob vector."""
         top_anchor = []
         top_positive = []

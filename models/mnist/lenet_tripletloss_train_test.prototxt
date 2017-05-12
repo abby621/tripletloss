@@ -24,7 +24,7 @@ layer {
   }
   data_param {
     source: "/project/focus/datasets/mnist/mnist_train_lmdb"
-    batch_size: 256
+    batch_size: 270
     backend: LMDB
   }
 }
@@ -43,7 +43,7 @@ layer {
   }
   data_param {
     source: "/project/focus/datasets/mnist/mnist_test_lmdb"
-    batch_size: 50
+    batch_size: 30
     backend: LMDB
   }
 }
