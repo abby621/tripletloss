@@ -72,7 +72,7 @@ class TripletSelectLayer(caffe.Layer):
         negative_im_data = im_paths_to_blob(negative_im_paths)
 
         # TODO: Now need to push our images through to get fc9_1 features for them (10x512)
-
+        print config.CURRENT_NET
 
         """Setup the TripletSelectLayer."""
 
