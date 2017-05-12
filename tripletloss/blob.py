@@ -13,6 +13,19 @@ import random
 from PIL import Image
 import string
 
+def im_paths_to_blob(paths):
+    im_blob = []
+    for im_path in paths:
+        if config.NUM_CHANNELS == 1:
+            im = cv2.imread(im_path,cv2.IMREAD_GRAYSCALE)
+        else:
+            im = cv2.imread(im_path)
+        im = prep_im_for_blob(im)
+        im_blob.append(im)
+    # Create a blob to hold the input images
+    im_data = im_list_to_blob(im_blob)
+    return im_data
+    
 def im_list_to_blob(ims):
     """Convert a list of images into a network input.
 

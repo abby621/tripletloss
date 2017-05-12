@@ -18,22 +18,8 @@ import config
 import json
 import lmdb
 import random
-from blob import prep_im_for_blob, im_list_to_blob
+from blob import prep_im_for_blob, im_list_to_blob, im_paths_to_blob
 import cv2
-
-# TODO: Grab triplets on the fly here.
-def im_paths_to_blob(paths):
-    im_blob = []
-    for im_path in paths:
-        if config.NUM_CHANNELS == 1:
-            im = cv2.imread(im_path,cv2.IMREAD_GRAYSCALE)
-        else:
-            im = cv2.imread(im_path)
-        im = prep_im_for_blob(im)
-        im_blob.append(im)
-    # Create a blob to hold the input images
-    im_data = im_list_to_blob(im_blob)
-    return im_data
 
 class TripletSelectLayer(caffe.Layer):
     def setup(self, bottom, top):
