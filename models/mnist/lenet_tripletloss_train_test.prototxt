@@ -176,6 +176,9 @@ layer {
   top: "anchor"
   top: "positive"
   top: "negative"
+  include {
+    phase: TRAIN
+  }
   python_param {
     module: "tripletselectlayer"
     layer: "TripletSelectLayer"
@@ -190,6 +193,9 @@ layer {
   top: "anchor"
   top: "positive"
   top: "negative"
+  include {
+    phase: TEST
+  }
   python_param {
     module: "tripletselectlayer"
     layer: "TripletSelectLayer"
@@ -203,6 +209,7 @@ layer {
   bottom: "positive"
   bottom: "negative"
   top: "tripletloss"
+
   python_param {
     module: "tripletlosslayer"
     layer: "TripletLayer"
