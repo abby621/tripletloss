@@ -111,7 +111,7 @@ layer {
     lr_mult: 2
   }
   convolution_param {
-    num_output: 50
+    num_output: 256
     kernel_size: 5
     stride: 1
     weight_filler {
