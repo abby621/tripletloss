@@ -1,12 +1,40 @@
 name: "LeNet"
 layer {
-  name: 'data'
-  type: "Python"
-  top: 'data'
-  top: 'label'
-  python_param {
-    module: 'datalayer'
-    layer: 'DataLayer'
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: false
+    crop_size: 28
+    mean_file: "/project/focus/datasets/mnist/mnist_mean.binaryproto"
+  }
+  data_param {
+    source: "/project/focus/datasets/mnist/triplet_train_lmdb"
+    batch_size: 270
+    backend: LMDB
+  }
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 28
+    mean_file: "/project/focus/datasets/mnist/mnist_mean.binaryproto"
+  }
+  data_param {
+    source: "/project/focus/datasets/mnist/mnist_test_lmdb"
+    batch_size: 270
+    backend: LMDB
   }
 }
 layer {
