@@ -38,17 +38,6 @@ layer {
   }
 }
 layer {
-  name: 'data'
-  type: 'Python'
-  top: 'data'
-  top: 'labels'
-  python_param {
-    module: 'datalayer'
-    layer: 'DataLayer'
-  }
-}
-
-layer {
   name: "conv1_1"
   type: "Convolution"
   bottom: "data"
