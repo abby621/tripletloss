@@ -13,7 +13,7 @@ layer {
     mean_file: "/project/focus/datasets/mnist/mnist_mean.binaryproto"
   }
   data_param {
-    source: "/project/focus/datasets/mnist/train_lmdb"
+    source: "/project/focus/datasets/mnist/mnist_train_lmdb"
     batch_size: 270
     backend: LMDB
   }
