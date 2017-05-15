@@ -38,17 +38,6 @@ layer {
   }
 }
 layer {
-  name: 'data'
-  type: 'Python'
-  top: 'data'
-  top: 'labels'
-  python_param {
-    module: 'datalayer'
-    layer: 'DataLayer'
-  }
-}
-
-layer {
   name: "conv1_1"
   type: "Convolution"
   bottom: "data"
@@ -568,7 +557,7 @@ layer {
   name: "triplet_select"
   type: "Python"
   bottom: "fc9_1"
-  bottom: "labels"
+  bottom: "label"
   top: "archor"
   top: "positive"
   top: "negative"
