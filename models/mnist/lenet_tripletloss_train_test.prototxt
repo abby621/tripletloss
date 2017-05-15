@@ -179,6 +179,21 @@ layer {
   python_param {
     module: "tripletselectlayer"
     layer: "TripletSelectLayer"
+    param_str:'{"phase":"TRAIN"}'
+  }
+}
+layer {
+  name: "triplet_select"
+  type: "Python"
+  bottom: "ip3"
+  bottom: "label"
+  top: "anchor"
+  top: "positive"
+  top: "negative"
+  python_param {
+    module: "tripletselectlayer"
+    layer: "TripletSelectLayer"
+    param_str:'{"phase":"TEST"}'
   }
 }
 layer {

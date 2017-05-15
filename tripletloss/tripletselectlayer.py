@@ -16,11 +16,13 @@ from caffe._caffe import RawBlobVec
 from sklearn import preprocessing
 import math
 import config
+import json
 
 class TripletSelectLayer(caffe.Layer):
-
     def setup(self, bottom, top):
         """Setup the TripletSelectLayer."""
+        param = json.laods(self.param_str)
+        self.phase = param['phase']
         if self.phase == 'TRAIN':
             self.triplet = config.TRAIN_BATCH_SIZE/3
         else:
