@@ -17,7 +17,6 @@ layer {
     batch_size: 270
     backend: LMDB
   }
-}
 layer {
   name: "data"
   type: "Data"
