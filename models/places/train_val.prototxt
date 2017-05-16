@@ -9,12 +9,12 @@ layer {
   }
   transform_param {
     mirror: false
-    crop_size: 28
+    crop_size: 227
     mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
   }
   data_param {
     source: "/project/focus/datasets/tc_tripletloss/triplet_train_lmdb"
-    batch_size: 270
+    batch_size: 30
     backend: LMDB
   }
 }
@@ -28,12 +28,12 @@ layer {
   }
   transform_param {
     mirror: false
-    crop_size: 28
+    crop_size: 227
     mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
   }
   data_param {
     source: "/project/focus/datasets/tc_tripletloss/mnist_test_lmdb"
-    batch_size: 270
+    batch_size: 30
     backend: LMDB
   }
 }
