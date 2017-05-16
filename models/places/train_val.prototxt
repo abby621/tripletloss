@@ -337,10 +337,10 @@ layer {
   }
 }
 layer {
- name: "norm2"
+ name: "norm3"
  type: "Python"
  bottom: "fc7"
- top: "norm2"
+ top: "norm3"
  python_param {
    module: "norm2layer"
    layer: "Norm2Layer"
@@ -349,7 +349,7 @@ layer {
 layer {
  name: "fc8_1"
  type: "InnerProduct"
- bottom: "norm2"
+ bottom: "norm3"
  top: "fc8_1"
  param {
     lr_mult: 10
@@ -382,7 +382,7 @@ layer {
 layer {
   name: "triplet_select"
   type: "Python"
-  bottom: "fc7"
+  bottom: "fc8_1"
   bottom: "label"
   top: "anchor"
   top: "positive"
