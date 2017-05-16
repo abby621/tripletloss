@@ -1,37 +1,41 @@
 name: "CaffeNet"
 layer {
   name: "data"
-  type: DATA
+  type: "Data"
   top: "data"
   top: "label"
-  data_param {
-    source: "/project/focus/datasets/tc_tripletloss/triplet_train_lmdb"
-    backend: LMDB
-    batch_size: 30
+  include {
+    phase: TRAIN
   }
   transform_param {
-    crop_size: 227
+    mirror: false
+    crop_size: 28
     mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
-    mirror: true
   }
-  include: { phase: TRAIN }
+  data_param {
+    source: "/project/focus/datasets/tc_tripletloss/triplet_train_lmdb"
+    batch_size: 270
+    backend: LMDB
+  }
 }
 layer {
   name: "data"
-  type: DATA
+  type: "Data"
   top: "data"
   top: "label"
-  data_param {
-    source: "/project/focus/datasets/tc_tripletloss/test_lmdb"
-    backend: LMDB
-    batch_size: 30
+  include {
+    phase: TEST
   }
   transform_param {
-    crop_size: 227
-    mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
     mirror: false
+    crop_size: 28
+    mean_file: "/project/focus/datasets/tc_tripletloss/mean.binaryproto"
   }
-  include: { phase: TEST }
+  data_param {
+    source: "/project/focus/datasets/tc_tripletloss/mnist_test_lmdb"
+    batch_size: 270
+    backend: LMDB
+  }
 }
 layer {
   name: "conv1"
