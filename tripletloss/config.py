@@ -4,7 +4,7 @@ from caffe.io import blobproto_to_array
 from caffe.proto import caffe_pb2
 import cv2
 
-WHICH_DATASET = 'mnist'
+WHICH_DATASET = 'tc'
 
 # Snapshot iteration
 SNAPSHOT_ITERS = 10000
@@ -31,8 +31,8 @@ if WHICH_DATASET == 'tc':
     else:
         SOLVER_PROTOTXT = '/project/focus/abby/tripletloss/models/traffickcam/lenet_solver.prototxt'
         PRETRAINED_MODEL = None
-    TARGET_SIZE = 256
-    CROP_SZ = 224
+    TARGET_SIZE = 227
+    CROP_SZ = 227
     TRAIN_BATCH_SIZE = 30
     TEST_BATCH_SIZE = 30
     data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
