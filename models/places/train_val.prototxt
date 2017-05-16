@@ -1,5 +1,5 @@
 name: "CaffeNet"
-layers {
+layer {
   name: "data"
   type: DATA
   top: "data"
@@ -16,7 +16,7 @@ layers {
   }
   include: { phase: TRAIN }
 }
-layers {
+layer {
   name: "data"
   type: DATA
   top: "data"
