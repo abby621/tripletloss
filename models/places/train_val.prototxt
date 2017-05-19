@@ -14,7 +14,7 @@ layer {
   }
   data_param {
     source: "/project/focus/datasets/tc_tripletloss/test_train_lmdb"
-    batch_size: 576
+    batch_size: 720
     backend: LMDB
   }
 }
@@ -33,7 +33,7 @@ layer {
   }
   data_param {
     source: "/project/focus/datasets/tc_tripletloss/test_lmdb"
-    batch_size: 576
+    batch_size: 720
     backend: LMDB
   }
 }
