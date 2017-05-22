@@ -308,10 +308,10 @@ layer {
   }
 }
 layer {
-  name: "fc8_1"
+  name: "fc8"
   type: "InnerProduct"
   bottom: "fc7"
-  top: "fc8_1"
+  top: "fc8"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -321,7 +321,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 128
+    num_output: 365
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -335,6 +335,6 @@ layer {
 layer {
   name: "prob"
   type: "Softmax"
-  bottom: "fc8_1"
+  bottom: "fc8"
   top: "prob"
 }
