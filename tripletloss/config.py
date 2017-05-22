@@ -33,8 +33,8 @@ if WHICH_DATASET == 'tc':
         PRETRAINED_MODEL = None
     TARGET_SIZE = 227
     CROP_SZ = 227
-    TRAIN_BATCH_SIZE = 600
-    TEST_BATCH_SIZE = 600
+    TRAIN_BATCH_SIZE = 30
+    TEST_BATCH_SIZE = 30
     data = open('/project/focus/datasets/tc_tripletloss/mean.binaryproto', 'rb' ).read()
 elif WHICH_DATASET == 'cifar':
     TRAIN_FILE = '/project/focus/datasets/cifar-10/train.txt'
