@@ -46,7 +46,7 @@ class TripletSelectLayer(caffe.Layer):
         for i in range(self.triplet):
             positive_feature = bottom[0].data[i+self.triplet]
             a_p = anchor_feature - positive_feature
-            ap = np.dot(a_p,a_p)
+            ap = np.dot(a_p,a_p) # sum of squared error -- maybe convert to difference of absolute value
             aps[i+self.triplet] = ap
         aps = sorted(aps.items(), key = lambda d: d[1], reverse = True)
         for i in range(self.triplet):
