@@ -26,7 +26,7 @@ class TripletLayer(caffe.Layer):
 
         # layer_params = yaml.load(self.param_str_)
         # self.margin = layer_params['margin']
-        self.margin = 20
+        self.margin = 1
 
         self.a = 1
         top[0].reshape(1)
